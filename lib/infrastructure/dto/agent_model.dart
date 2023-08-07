@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 class AgentModel {
   String? uuid;
   String? displayName;
@@ -45,13 +47,23 @@ class AgentModel {
       this.voiceLine});
 
   AgentModel.fromJson(Map<String, dynamic> json) {
+    log('line 50');
     uuid = json['uuid'];
+    log('line 52');
     displayName = json['displayName'];
+    log('line 54');
     description = json['description'];
+    log('line 56');
     developerName = json['developerName'];
-    characterTags = json['characterTags'].cast<String>();
+    log('line 58');
+
+    //TODO
+    //characterTags = json['characterTags'].cast<String>() ?? [];
+    log('line 60');
     displayIcon = json['displayIcon'];
+    log('line 62');
     displayIconSmall = json['displayIconSmall'];
+    log('line 64');
     bustPortrait = json['bustPortrait'];
     fullPortrait = json['fullPortrait'];
     fullPortraitV2 = json['fullPortraitV2'];
@@ -73,6 +85,7 @@ class AgentModel {
     voiceLine = json['voiceLine'] != null
         ? VoiceLine.fromJson(json['voiceLine'])
         : null;
+    log('line 86');
   }
 
   Map<String, dynamic> toJson() {
@@ -108,11 +121,18 @@ class AgentModel {
   }
 
   static List<AgentModel> fetchData(Map<String, dynamic> json) {
+    log('line 113');
     final List data = json['data'] ?? [];
+    log('line 115');
     final List<AgentModel> list = [];
+    log('line 116');
     for (var element in data) {
+      log('line 119');
+      log('${element}');
       list.add(AgentModel.fromJson(element));
+      log('line 122');
     }
+    log('line 124');
     return list;
   }
 }

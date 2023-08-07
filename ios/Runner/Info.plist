@@ -4,6 +4,8 @@
 <dict>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
+	<key>NSAllowsArbitraryLoads</key>
+	<true/>
 	<key>CFBundleDisplayName</key>
 	<string>Volarant Agents</string>
 	<key>CFBundleExecutable</key>

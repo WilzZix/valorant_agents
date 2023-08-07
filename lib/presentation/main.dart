@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:volarant_agents/application/agents/agents_bloc.dart';
+import 'package:volarant_agents/application/app_manager/app_manager_cubit.dart';
 import 'package:volarant_agents/infrastructure/services/network_provider.dart';
 
 void main() {
@@ -16,19 +17,32 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  void initNetworkProvider() async {
-    await NetworkProvider.init();
-  }
-
   @override
   void initState() {
     super.initState();
   }
 
+  String octColor = 'c7f458ff';
+
+  Color octToColor(String code) {
+    return Color(int.parse('0xff$code'));
+  }
+
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => AgentsBloc()..add(GetAgentsEvent()),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) =>
+          AppManagerCubit()
+            ..initApp(),
+        ),
+        BlocProvider(
+          create: (context) =>
+          AgentsBloc()
+            ..add(GetAgentsEvent()),
+        ),
+      ],
       child: MaterialApp(
         home: Scaffold(
           backgroundColor: const Color(0xFF0D131A),
@@ -88,10 +102,10 @@ class _MyAppState extends State<MyApp> {
                             child: GridView.builder(
                               itemCount: state.data.length,
                               gridDelegate:
-                                  const SliverGridDelegateWithFixedCrossAxisCount(
-                                      crossAxisCount: 2,
-                                      crossAxisSpacing: 8,
-                                      mainAxisSpacing: 4),
+                              const SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: 2,
+                                  crossAxisSpacing: 8,
+                                  mainAxisSpacing: 4),
                               itemBuilder: (BuildContext context, int index) {
                                 return Stack(
                                   children: [
@@ -99,14 +113,18 @@ class _MyAppState extends State<MyApp> {
                                       height: 250,
                                       decoration: BoxDecoration(
                                         borderRadius: BorderRadius.circular(20),
-                                        gradient: const LinearGradient(
+                                        gradient: LinearGradient(
                                           begin: Alignment.topCenter,
                                           end: Alignment.bottomCenter,
                                           colors: [
-                                            Color(0xFF2fdddeff),
-                                            Color(0xFF4f53afff),
-                                            Color(0xFF344673ff),
-                                            Color(0xFF193b3dff),
+                                            octToColor(state.data[index]
+                                                .backgroundGradientColors![0]),
+                                            octToColor(state.data[index]
+                                                .backgroundGradientColors![1]),
+                                            octToColor(state.data[index]
+                                                .backgroundGradientColors![2]),
+                                            octToColor(state.data[index]
+                                                .backgroundGradientColors![3]),
                                           ],
                                           tileMode: TileMode.decal,
                                         ),
@@ -115,11 +133,12 @@ class _MyAppState extends State<MyApp> {
                                     ),
                                     Image.network(
                                       fit: BoxFit.cover,
-                                      'https://media.valorant-api.com/agents/${state.data[index].uuid}/fullportrait.png',
+                                      'https://media.valorant-api.com/agents/${state
+                                          .data[index].uuid}/fullportrait.png',
                                     ),
                                     Column(
                                       crossAxisAlignment:
-                                          CrossAxisAlignment.start,
+                                      CrossAxisAlignment.start,
                                       children: [
                                         const SizedBox(
                                           height: 105,
@@ -135,14 +154,17 @@ class _MyAppState extends State<MyApp> {
                                                 color: Colors.white),
                                           ),
                                         ),
-                                        Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: Text(
-                                            state
-                                                .data[index].role!.displayName!,
-                                            style: const TextStyle(
-                                                fontSize: 24,
-                                                color: Colors.white),
+                                       if( state.data[index].role != null) Expanded(
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: Text(
+                                              state.data[index].role!
+                                                  .displayName! ??
+                                                  "",
+                                              style: const TextStyle(
+                                                  fontSize: 24,
+                                                  color: Colors.white),
+                                            ),
                                           ),
                                         ),
                                       ],
@@ -186,8 +208,8 @@ class TabItem extends StatelessWidget {
           style: TextStyle(
               color: checked
                   ? const Color(
-                      0xFFDD3B4F,
-                    )
+                0xFFDD3B4F,
+              )
                   : Colors.grey,
               fontSize: 24),
         ),
@@ -202,8 +224,8 @@ class TabItem extends StatelessWidget {
             borderRadius: BorderRadius.circular(9),
             color: checked
                 ? const Color(
-                    0xFFDD3B4F,
-                  )
+              0xFFDD3B4F,
+            )
                 : Colors.grey,
           ),
         ),
