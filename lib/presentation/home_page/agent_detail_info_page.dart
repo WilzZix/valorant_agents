@@ -1,6 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class AgentDetailInfoPage extends StatelessWidget {
   const AgentDetailInfoPage({super.key});
@@ -22,26 +22,26 @@ class AgentDetailInfoPage extends StatelessWidget {
                   children: [
                     Center(
                       child: Padding(
-                        padding: const EdgeInsets.only(top: 100, left: 16),
+                        padding: EdgeInsets.only(top: 100.h, left: 16.w),
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
-                            const Text(
+                            Text(
                               'Omen',
-                              style:
-                                  TextStyle(fontSize: 42, color: Colors.white),
+                              style: TextStyle(
+                                  fontSize: 42.sp, color: Colors.white),
                             ),
-                            const SizedBox(
-                              height: 8,
+                            SizedBox(
+                              height: 8.h,
                             ),
                             Container(
-                              height: 32,
-                              width: 100,
-                              decoration: const BoxDecoration(
-                                  color: Color(0xFF16163F),
+                              height: 32.h,
+                              width: 100.w,
+                              decoration: BoxDecoration(
+                                  color: const Color(0xFF16163F),
                                   shape: BoxShape.rectangle,
                                   borderRadius:
-                                      BorderRadius.all(Radius.circular(8))),
+                                      BorderRadius.all(Radius.circular(8.r))),
                               child: const Center(
                                   child: Text(
                                 'Controller',
@@ -52,9 +52,11 @@ class AgentDetailInfoPage extends StatelessWidget {
                         ),
                       ),
                     ),
-                    CachedNetworkImage(
-                      imageUrl:
-                          'https://media.valorant-api.com/agents/8e253930-4c05-31dd-1b6c-968525494517/fullportrait.png',
+                    Expanded(
+                      child: CachedNetworkImage(
+                        imageUrl:
+                            'https://media.valorant-api.com/agents/8e253930-4c05-31dd-1b6c-968525494517/fullportrait.png',
+                      ),
                     )
                   ],
                 ),
@@ -64,9 +66,9 @@ class AgentDetailInfoPage extends StatelessWidget {
               width: double.infinity,
               height: MediaQuery.of(context).size.height * 0.7,
               color: const Color(0xFF0C1217),
-              child: const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-                child: SingleChildScrollView(
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 16.h, vertical: 16.w),
+                child: const SingleChildScrollView(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [

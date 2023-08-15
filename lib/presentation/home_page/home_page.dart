@@ -88,7 +88,7 @@ class _HomePageState extends State<HomePage> {
                           itemBuilder: (BuildContext context, int index) {
                             return GestureDetector(
                               onTap: () {
-                                context.go('/detail');
+                                context.push('/detail');
                               },
                               child: Stack(
                                 children: [
