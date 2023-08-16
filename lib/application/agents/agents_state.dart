@@ -18,3 +18,15 @@ class AgentsLoadFailureState extends AgentsState {
 
   AgentsLoadFailureState(this.msg);
 }
+
+/// Agents detail info
+
+class AgentDetailInfoLoadingState extends AgentsState {}
+
+class AgentDetailDataLoadedState extends AgentsState {
+  final AgentModel data;
+
+  AgentDetailDataLoadedState(this.data);
+}
+
+class AgentsDetailInfoLoadFailureState extends AgentsState {}

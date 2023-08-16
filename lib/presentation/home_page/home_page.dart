@@ -1,5 +1,4 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
@@ -16,11 +15,11 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
-  Color octToColor(String code) {
-    return Color(int.parse('0xff$code'));
-  }
+Color octToColor(String code) {
+  return Color(int.parse('0xff$code'));
+}
 
+class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -74,6 +73,9 @@ class _HomePageState extends State<HomePage> {
                   height: 24,
                 ),
                 BlocBuilder<AgentsBloc, AgentsState>(
+                  buildWhen: (context, state) {
+                    return state is AgentsLoadedState;
+                  },
                   builder: (context, state) {
                     if (state is AgentsLoadedState) {
                       return SizedBox(
@@ -87,8 +89,9 @@ class _HomePageState extends State<HomePage> {
                                   mainAxisSpacing: 4),
                           itemBuilder: (BuildContext context, int index) {
                             return GestureDetector(
-                              onTap: () {
-                                context.push('/detail');
+                              onTap: () async {
+                                context.push('/detail',
+                                    extra: state.data[index].uuid);
                               },
                               child: Stack(
                                 children: [
@@ -96,30 +99,31 @@ class _HomePageState extends State<HomePage> {
                                     height: 250,
                                     decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(20),
-                                      gradient: LinearGradient(
-                                        begin: Alignment.topCenter,
-                                        end: Alignment.bottomCenter,
-                                        colors: [
-                                          octToColor(state.data[index]
-                                              .backgroundGradientColors![0]),
+                                      color: Color.alphaBlend(
                                           octToColor(state.data[index]
                                               .backgroundGradientColors![1]),
                                           octToColor(state.data[index]
-                                              .backgroundGradientColors![2]),
-                                          octToColor(state.data[index]
-                                              .backgroundGradientColors![3]),
-                                        ],
-                                        tileMode: TileMode.decal,
-                                      ),
+                                              .backgroundGradientColors![3])),
+                                      // gradient: LinearGradient(
+                                      //   begin: Alignment.topCenter,
+                                      //   end: Alignment.bottomCenter,
+                                      //   colors: [
+                                      //     octToColor(state.data[index]
+                                      //         .backgroundGradientColors![0]),
+                                      //     octToColor(state.data[index]
+                                      //         .backgroundGradientColors![1]),
+                                      //     octToColor(state.data[index]
+                                      //         .backgroundGradientColors![2]),
+                                      //     octToColor(state.data[index]
+                                      //         .backgroundGradientColors![3]),
+                                      //   ],
+                                      //   tileMode: TileMode.decal,
+                                      // ),
                                       shape: BoxShape.rectangle,
                                     ),
                                   ),
                                   CachedNetworkImage(
                                     fit: BoxFit.cover,
-                                    // placeholder: (context, url) =>
-                                    //     const Center(child: CircularProgressIndicator()),
-                                    // errorWidget: (context, url, error) =>
-                                    //     const Icon(Icons.error),
                                     imageUrl:
                                         'https://media.valorant-api.com/agents/${state.data[index].uuid}/fullportrait.png',
                                   ),

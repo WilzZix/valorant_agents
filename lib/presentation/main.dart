@@ -56,7 +56,9 @@ final _router = GoRouter(
     ),
     GoRoute(
       path: '/detail',
-      builder: (context, state) => const AgentDetailInfoPage(),
+      builder: (context, state) => AgentDetailInfoPage(
+        agentId: state.extra as String,
+      ),
     ),
   ],
 );

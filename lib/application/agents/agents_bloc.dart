@@ -12,6 +12,7 @@ part 'agents_state.dart';
 class AgentsBloc extends Bloc<AgentsEvent, AgentsState> {
   AgentsBloc() : super(AgentsInitial()) {
     on<GetAgentsEvent>(_getAgents);
+    on<GetAgentDetailInfoEvent>(_getAgentDetail);
   }
 
   AgentsRepository repository = AgentsRepository();
@@ -23,6 +24,17 @@ class AgentsBloc extends Bloc<AgentsEvent, AgentsState> {
       emit(AgentsLoadedState(data));
     } catch (e) {
       emit(AgentsLoadFailureState(e.toString()));
+    }
+  }
+
+  Future _getAgentDetail(
+      GetAgentDetailInfoEvent event, Emitter<AgentsState> emitter) async {
+    emit(AgentDetailInfoLoadingState());
+    try {
+      AgentModel data = await repository.getAgentDetail(agentId: event.agentId);
+      emit(AgentDetailDataLoadedState(data));
+    } catch (e) {
+      emit(AgentsDetailInfoLoadFailureState());
     }
   }
 }
