@@ -95,34 +95,38 @@ class _HomePageState extends State<HomePage> {
                               },
                               child: Stack(
                                 children: [
-                                  Container(
-                                    height: 250,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(20),
-                                      color: Color.alphaBlend(
-                                          octToColor(state.data[index]
-                                              .backgroundGradientColors![1]),
-                                          octToColor(state.data[index]
-                                              .backgroundGradientColors![3])),
-                                      // gradient: LinearGradient(
-                                      //   begin: Alignment.topCenter,
-                                      //   end: Alignment.bottomCenter,
-                                      //   colors: [
-                                      //     octToColor(state.data[index]
-                                      //         .backgroundGradientColors![0]),
-                                      //     octToColor(state.data[index]
-                                      //         .backgroundGradientColors![1]),
-                                      //     octToColor(state.data[index]
-                                      //         .backgroundGradientColors![2]),
-                                      //     octToColor(state.data[index]
-                                      //         .backgroundGradientColors![3]),
-                                      //   ],
-                                      //   tileMode: TileMode.decal,
-                                      // ),
-                                      shape: BoxShape.rectangle,
+                                  ClipPath(
+                                    clipper: CustomClipPath(),
+                                    child: Container(
+                                      height: 250,
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(20),
+                                        color: Color.alphaBlend(
+                                            octToColor(state.data[index]
+                                                .backgroundGradientColors![1]),
+                                            octToColor(state.data[index]
+                                                .backgroundGradientColors![3])),
+                                        // gradient: LinearGradient(
+                                        //   begin: Alignment.topCenter,
+                                        //   end: Alignment.bottomCenter,
+                                        //   colors: [
+                                        //     octToColor(state.data[index]
+                                        //         .backgroundGradientColors![0]),
+                                        //     octToColor(state.data[index]
+                                        //         .backgroundGradientColors![1]),
+                                        //     octToColor(state.data[index]
+                                        //         .backgroundGradientColors![2]),
+                                        //     octToColor(state.data[index]
+                                        //         .backgroundGradientColors![3]),
+                                        //   ],
+                                        //   tileMode: TileMode.decal,
+                                        // ),
+                                        shape: BoxShape.rectangle,
+                                      ),
                                     ),
                                   ),
                                   CachedNetworkImage(
+                                    height: 600,
                                     fit: BoxFit.cover,
                                     imageUrl:
                                         'https://media.valorant-api.com/agents/${state.data[index].uuid}/fullportrait.png',
@@ -141,20 +145,20 @@ class _HomePageState extends State<HomePage> {
                                           state.data[index].displayName!,
                                           style: const TextStyle(
                                               fontWeight: FontWeight.bold,
-                                              fontSize: 30,
+                                              fontSize: 22,
                                               color: Colors.white),
                                         ),
                                       ),
                                       if (state.data[index].role != null)
                                         Expanded(
                                           child: Padding(
-                                            padding: const EdgeInsets.all(8.0),
+                                            padding: const EdgeInsets.only(left: 8.0),
                                             child: Text(
                                               state.data[index].role!
                                                       .displayName! ??
                                                   "",
                                               style: const TextStyle(
-                                                  fontSize: 24,
+                                                  fontSize: 18,
                                                   color: Colors.white),
                                             ),
                                           ),
@@ -177,5 +181,39 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
     );
+  }
+}
+
+class CustomClipPath extends CustomClipper<Path> {
+  @override
+  Path getClip(Size size) {
+    double w = size.width;
+    double h = size.height;
+    final path = Path();
+
+    path.lineTo(0, h);
+    path.lineTo(0, h);
+    path.lineTo(w, h);
+
+    path.quadraticBezierTo(
+      w * 0.5,
+      h - 100,
+      w,
+      0,
+    );
+    path.quadraticBezierTo(
+      w * 0.5,
+      h - 100,
+      0,
+      0,
+    );
+
+    path.close();
+    return path;
+  }
+
+  @override
+  bool shouldReclip(covariant CustomClipper<Path> oldClipper) {
+    return true;
   }
 }

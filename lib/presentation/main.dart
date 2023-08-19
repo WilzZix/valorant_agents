@@ -39,6 +39,7 @@ class _MyAppState extends State<MyApp> {
             ),
           ],
           child: MaterialApp.router(
+            debugShowCheckedModeBanner: false,
             routerConfig: _router,
           ),
         );
