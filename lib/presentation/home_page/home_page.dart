@@ -81,6 +81,7 @@ class _HomePageState extends State<HomePage> {
                       return SizedBox(
                         height: 600,
                         child: GridView.builder(
+                          shrinkWrap: true,
                           itemCount: state.data.length,
                           gridDelegate:
                               const SliverGridDelegateWithFixedCrossAxisCount(

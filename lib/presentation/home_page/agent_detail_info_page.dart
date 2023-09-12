@@ -41,47 +41,57 @@ class _AgentDetailInfoPageState extends State<AgentDetailInfoPage> {
                       color: Color(0xFF38377F),
                     ),
                     child: Center(
-                      child: Row(
+                      child: Stack(
                         children: [
-                          Center(
-                            child: Padding(
-                              padding: EdgeInsets.only(top: 100.h, left: 16.w),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    state.data.displayName!,
-                                    style: TextStyle(
-                                        fontSize: 42.sp, color: Colors.white),
-                                  ),
-                                  SizedBox(
-                                    height: 8.h,
-                                  ),
-                                  Container(
-                                    height: 32.h,
-                                    width: 100.w,
-                                    decoration: BoxDecoration(
-                                        color: const Color(0xFF16163F),
-                                        shape: BoxShape.rectangle,
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(8.r))),
-                                    child: Center(
-                                      child: Text(
-                                        state.data.role!.displayName!,
-                                        style: const TextStyle(
-                                            color: Colors.white54),
-                                      ),
-                                    ),
-                                  )
-                                ],
-                              ),
-                            ),
+                          Image.network(
+                            state.data.fullPortrait! ?? '',
+                            opacity: const AlwaysStoppedAnimation(.2),
                           ),
-                          Expanded(
-                            child: CachedNetworkImage(
-                              imageUrl: state.data.fullPortrait! ?? '',
-                            ),
-                          )
+                          Row(
+                            children: [
+                              Center(
+                                child: Padding(
+                                  padding:
+                                      EdgeInsets.only(top: 100.h, left: 16.w),
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        state.data.displayName!,
+                                        style: TextStyle(
+                                            fontSize: 42.sp,
+                                            color: Colors.white),
+                                      ),
+                                      SizedBox(
+                                        height: 8.h,
+                                      ),
+                                      Container(
+                                        height: 32.h,
+                                        width: 100.w,
+                                        decoration: BoxDecoration(
+                                            color: const Color(0xFF16163F),
+                                            shape: BoxShape.rectangle,
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(8.r))),
+                                        child: Center(
+                                          child: Text(
+                                            state.data.role!.displayName!,
+                                            style: const TextStyle(
+                                                color: Colors.white54),
+                                          ),
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              Expanded(
+                                child: CachedNetworkImage(
+                                  imageUrl: state.data.fullPortrait! ?? '',
+                                ),
+                              )
+                            ],
+                          ),
                         ],
                       ),
                     ),

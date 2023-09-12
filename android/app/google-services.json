@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "920985779849",
+    "project_id": "valorant-agents-390a7",
+    "storage_bucket": "valorant-agents-390a7.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:920985779849:android:61e80cbd1e41d0c0fbd058",
+        "android_client_info": {
+          "package_name": "com.example.volarant_agents"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAUSX0QY6McMA7ykJeZxbHzB-30OIpXoFA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
