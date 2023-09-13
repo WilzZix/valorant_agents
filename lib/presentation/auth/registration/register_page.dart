@@ -1,6 +1,6 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({Key? key}) : super(key: key);
@@ -72,9 +72,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
               ),
             ),
           ),
-          const SizedBox(
-            height: 24,
-          ),
           TextFormField(
             decoration: const InputDecoration(
               labelText: 'Full name',
@@ -83,21 +80,19 @@ class _RegisterScreenState extends State<RegisterScreen> {
               ),
             ),
           ),
-          TextFormField(
-            decoration: const InputDecoration(
-              labelText: 'Company name',
-              prefixIcon: Icon(
-                Icons.lock,
-              ),
-            ),
+          const SizedBox(
+            height: 24,
           ),
           SizedBox(
             height: 40,
             child: TextButton(
-              onPressed: () {},
+              onPressed: () {
+                FirebaseAuth.instance.signInWithEmailAndPassword(
+                    email: 'test@test.com', password: '123456');
+              },
               style: ButtonStyle(
                   backgroundColor:
-                  MaterialStateProperty.all<Color>(Colors.blue)),
+                      MaterialStateProperty.all<Color>(Colors.blue)),
               child: const Text(
                 'Sign up',
                 style: TextStyle(color: Colors.white),

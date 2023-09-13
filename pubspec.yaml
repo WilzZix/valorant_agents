@@ -45,6 +45,7 @@ dependencies:
   flutter_screenutil: ^5.8.4
   shimmer: ^3.0.0
   firebase_core: ^2.15.1
+  firebase_auth: ^4.9.0
 dev_dependencies:
   flutter_test:
     sdk: flutter
