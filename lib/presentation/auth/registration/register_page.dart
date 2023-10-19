@@ -1,6 +1,9 @@
-import 'package:firebase_auth/firebase_auth.dart';
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:volarant_agents/application/auth/auth_bloc.dart';
+import 'package:volarant_agents/presentation/home_page/home_page.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({Key? key}) : super(key: key);
@@ -10,102 +13,143 @@ class RegisterScreen extends StatefulWidget {
 }
 
 class _RegisterScreenState extends State<RegisterScreen> {
+  TextEditingController emailTextController = TextEditingController();
+  TextEditingController passwordTextController = TextEditingController();
+  TextEditingController nameController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: ListView(
-        padding: const EdgeInsets.all(20),
-        children: [
-          Image.asset(
-            'assets/register.jpg',
-            height: 400,
-            width: 400,
-          ),
-          const Text(
-            'Sign up',
-            style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
-          ),
-          const SizedBox(
-            height: 16,
-          ),
-          const Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              SignInMethodWidget(
-                path: 'assets/google.png',
-              ),
-              SignInMethodWidget(
-                path: 'assets/apple.png',
-              ),
-              SignInMethodWidget(
-                path: 'assets/facebook.png',
-              ),
-            ],
-          ),
-          const SizedBox(
-            height: 20,
-          ),
-          const Center(
-            child: Text(
-              'Or, register with email...',
+      body: BlocListener<AuthBloc, AuthState>(
+        listener: (context, state) {
+          if (state is LoggedInState) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const HomePage()),
+            );
+          }
+          if (state is LoginErrorState) {
+            showBottomSheet(
+                context: context,
+                builder: (context) {
+                  return SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.5,
+                    child: Center(
+                      child: Text(state.msg),
+                    ),
+                  );
+                });
+          }
+        },
+        child: ListView(
+          padding: const EdgeInsets.all(20),
+          children: [
+            Image.asset(
+              'assets/register.jpg',
+              height: 400,
+              width: 400,
             ),
-          ),
-          const SizedBox(
-            height: 16,
-          ),
-          TextFormField(
-            decoration: const InputDecoration(
-              labelText: 'Email',
-              prefixIcon: Icon(
-                Icons.mail,
-              ),
+            const Text(
+              'Sign up',
+              style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
             ),
-          ),
-          const SizedBox(
-            height: 8,
-          ),
-          TextFormField(
-            decoration: const InputDecoration(
-              labelText: 'Password',
-              prefixIcon: Icon(
-                Icons.lock,
-              ),
+            const SizedBox(
+              height: 16,
             ),
-          ),
-          TextFormField(
-            decoration: const InputDecoration(
-              labelText: 'Full name',
-              prefixIcon: Icon(
-                Icons.lock,
+            const Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                SignInMethodWidget(
+                  path: 'assets/google.png',
+                ),
+                SignInMethodWidget(
+                  path: 'assets/apple.png',
+                ),
+                SignInMethodWidget(
+                  path: 'assets/facebook.png',
+                ),
+              ],
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            const Center(
+              child: Text(
+                'Or, register with email...',
               ),
             ),
-          ),
-          const SizedBox(
-            height: 24,
-          ),
-          SizedBox(
-            height: 40,
-            child: TextButton(
-              onPressed: () {
-                FirebaseAuth.instance.signInWithEmailAndPassword(
-                    email: 'test@test.com', password: '123456');
+            const SizedBox(
+              height: 16,
+            ),
+            TextFormField(
+              onChanged: (value) {
+                emailTextController.text = value;
               },
-              style: ButtonStyle(
-                  backgroundColor:
-                      MaterialStateProperty.all<Color>(Colors.blue)),
-              child: const Text(
-                'Sign up',
-                style: TextStyle(color: Colors.white),
+              controller: emailTextController,
+              decoration: const InputDecoration(
+                labelText: 'Email',
+                prefixIcon: Icon(
+                  Icons.mail,
+                ),
               ),
             ),
-          ),
-          const SizedBox(
-            height: 16,
-          ),
-          const SizedBox(
-            height: 16,
-          ),
-        ],
+            const SizedBox(
+              height: 8,
+            ),
+            TextFormField(
+              onChanged: (value) {
+                passwordTextController.text = value;
+              },
+              controller: passwordTextController,
+              decoration: const InputDecoration(
+                labelText: 'Password',
+                prefixIcon: Icon(
+                  Icons.lock,
+                ),
+              ),
+            ),
+            TextFormField(
+              onChanged: (value) {
+                nameController.text = value;
+              },
+              controller: nameController,
+              decoration: const InputDecoration(
+                labelText: 'Full name',
+                prefixIcon: Icon(
+                  Icons.lock,
+                ),
+              ),
+            ),
+            const SizedBox(
+              height: 24,
+            ),
+            SizedBox(
+              height: 40,
+              child: TextButton(
+                onPressed: () {
+                  log('line 92');
+                  BlocProvider.of<AuthBloc>(context).add(
+                      LoginWithEmailAndPasswordEvent(emailTextController.text,
+                          passwordTextController.text));
+                  log('line 99');
+                },
+                style: ButtonStyle(
+                    backgroundColor:
+                        MaterialStateProperty.all<Color>(Colors.blue)),
+                child: const Text(
+                  'Sign in',
+                  style: TextStyle(color: Colors.white),
+                ),
+              ),
+            ),
+            const SizedBox(
+              height: 16,
+            ),
+            const SizedBox(
+              height: 16,
+            ),
+          ],
+        ),
       ),
     );
   }

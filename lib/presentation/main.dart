@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:volarant_agents/application/agents/agents_bloc.dart';
 import 'package:volarant_agents/application/app_manager/app_manager_cubit.dart';
+import 'package:volarant_agents/application/auth/auth_bloc.dart';
 import 'package:volarant_agents/firebase_options.dart';
 import 'package:volarant_agents/presentation/auth/registration/register_page.dart';
 import 'package:volarant_agents/presentation/home_page/agent_detail_info_page.dart';
@@ -47,6 +48,7 @@ class _MyAppState extends State<MyApp> {
             BlocProvider(
               create: (context) => AgentsBloc()..add(GetAgentsEvent()),
             ),
+            BlocProvider(create: (context) => AuthBloc()),
           ],
           child: MaterialApp.router(
             debugShowCheckedModeBanner: false,
