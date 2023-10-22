@@ -5,6 +5,7 @@ import 'package:bloc/bloc.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:meta/meta.dart';
 import 'package:volarant_agents/infrastructure/dto/user_model.dart';
+import 'package:volarant_agents/infrastructure/repositories/auth/auth_repository.dart';
 
 part 'auth_event.dart';
 
@@ -14,20 +15,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   AuthBloc() : super(AuthInitial()) {
     on<LoginWithEmailAndPasswordEvent>((event, emit) async {
       try {
+        AuthRepository repository = AuthRepository();
         emit(LoginInProgressState());
-        UserModel data = UserModel('', '', '', '');
-        await FirebaseAuth.instance
-            .signInWithEmailAndPassword(
-                email: event.email, password: event.password)
-            .then((value) {
-          data = UserModel(
-              value.user!.email.toString(),
-              value.user!.displayName.toString(),
-              value.user!.phoneNumber.toString(),
-              value.user!.refreshToken.toString());
-          log('line 28 $value');
-          emit(LoggedInState(data));
-        });
+        UserModel data = await repository.login(event.email, event.password);
+        emit(LoggedInState(data));
       } on FirebaseAuthException catch (e) {
         if (e.code == 'user-not-found') {
           emit(LoginErrorState('No user found for that email.'));
@@ -37,6 +28,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           print('Wrong password provided for that user.');
         }
       } catch (e) {
+        log('line 39');
         emit(LoginErrorState(e.toString()));
       }
     });

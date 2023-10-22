@@ -23,6 +23,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       body: BlocListener<AuthBloc, AuthState>(
         listener: (context, state) {
           if (state is LoggedInState) {
+            log('line 26');
             Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => const HomePage()),
