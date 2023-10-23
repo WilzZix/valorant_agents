@@ -6,7 +6,9 @@ import 'package:go_router/go_router.dart';
 import 'package:volarant_agents/application/agents/agents_bloc.dart';
 import 'package:volarant_agents/application/app_manager/app_manager_cubit.dart';
 import 'package:volarant_agents/application/auth/auth_bloc.dart';
+import 'package:volarant_agents/application/user/user_bloc.dart';
 import 'package:volarant_agents/firebase_options.dart';
+import 'package:volarant_agents/presentation/auth/login/login_page.dart';
 import 'package:volarant_agents/presentation/auth/registration/register_page.dart';
 import 'package:volarant_agents/presentation/home_page/agent_detail_info_page.dart';
 import 'package:volarant_agents/presentation/home_page/home_page.dart';
@@ -43,6 +45,9 @@ class _MyAppState extends State<MyApp> {
         return MultiBlocProvider(
           providers: [
             BlocProvider(
+              create: (context) => UserBloc()
+            ),
+            BlocProvider(
               create: (context) => AppManagerCubit()..initApp(),
             ),
             BlocProvider(
@@ -61,7 +66,7 @@ class _MyAppState extends State<MyApp> {
 }
 
 final _router = GoRouter(
-  initialLocation: '/register',
+  initialLocation: '/login',
   routes: [
     GoRoute(
       path: '/',
@@ -72,6 +77,10 @@ final _router = GoRouter(
       builder: (context, state) => AgentDetailInfoPage(
         agentId: state.extra as String,
       ),
+    ),
+    GoRoute(
+      path: '/login',
+      builder: (context, state) => const LoginScreen(),
     ),
     GoRoute(
       path: '/register',

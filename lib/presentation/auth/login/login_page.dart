@@ -1,16 +1,19 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:volarant_agents/application/user/user_bloc.dart';
-import 'package:volarant_agents/presentation/auth/login/login_page.dart';
+import 'package:go_router/go_router.dart';
+import 'package:volarant_agents/application/auth/auth_bloc.dart';
+import 'package:volarant_agents/presentation/home_page/home_page.dart';
 
-class RegisterScreen extends StatefulWidget {
-  const RegisterScreen({Key? key}) : super(key: key);
+class LoginScreen extends StatefulWidget {
+  const LoginScreen({Key? key}) : super(key: key);
 
   @override
-  State<RegisterScreen> createState() => _RegisterScreenState();
+  State<LoginScreen> createState() => _LoginScreenState();
 }
 
-class _RegisterScreenState extends State<RegisterScreen> {
+class _LoginScreenState extends State<LoginScreen> {
   TextEditingController emailTextController = TextEditingController();
   TextEditingController passwordTextController = TextEditingController();
   TextEditingController nameController = TextEditingController();
@@ -18,15 +21,16 @@ class _RegisterScreenState extends State<RegisterScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: BlocListener<UserBloc, UserState>(
+      body: BlocListener<AuthBloc, AuthState>(
         listener: (context, state) {
-          if (state is UserCreatedState) {
+          if (state is LoggedInState) {
+            log('line 26');
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => const LoginScreen()),
+              MaterialPageRoute(builder: (context) => const HomePage()),
             );
           }
-          if (state is UserCreateFailureState) {
+          if (state is LoginErrorState) {
             showBottomSheet(
                 context: context,
                 builder: (context) {
@@ -48,7 +52,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
               width: 400,
             ),
             const Text(
-              'Sign up',
+              'Sign in',
               style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
             ),
             const SizedBox(
@@ -113,20 +117,41 @@ class _RegisterScreenState extends State<RegisterScreen> {
               height: 40,
               child: TextButton(
                 onPressed: () {
-                  BlocProvider.of<UserBloc>(context)
-                      .add(CreateUserEvent(emailTextController.text, passwordTextController.text));
+                  log('line 92');
+                  BlocProvider.of<AuthBloc>(context).add(
+                      LoginWithEmailAndPasswordEvent(emailTextController.text,
+                          passwordTextController.text));
+                  log('line 99');
                 },
                 style: ButtonStyle(
                     backgroundColor:
                         MaterialStateProperty.all<Color>(Colors.blue)),
                 child: const Text(
-                  'Sign up',
+                  'Sign in',
                   style: TextStyle(color: Colors.white),
                 ),
               ),
             ),
             const SizedBox(
               height: 16,
+            ),
+            const SizedBox(
+              height: 16,
+            ),
+            SizedBox(
+              height: 40,
+              child: TextButton(
+                onPressed: () {
+                  context.go('/register');
+                },
+                style: ButtonStyle(
+                    backgroundColor:
+                        MaterialStateProperty.all<Color>(Colors.blue)),
+                child: const Text(
+                  'Create account',
+                  style: TextStyle(color: Colors.white),
+                ),
+              ),
             ),
             const SizedBox(
               height: 16,

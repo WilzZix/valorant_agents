@@ -1,5 +1,7 @@
+import 'package:volarant_agents/infrastructure/dto/user_model.dart';
+
 abstract class IUser {
   const IUser._();
 
-  Future createUser(String name, String email, String password);
+  Future<UserModel> createUser(String name, String email, String password);
 }
