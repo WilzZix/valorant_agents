@@ -29,8 +29,8 @@ class TabItem extends StatelessWidget {
           height: 8,
         ),
         Container(
-          height: 5,
-          width: 20,
+          height: 3,
+          width: 70,
           decoration: BoxDecoration(
             shape: BoxShape.rectangle,
             borderRadius: BorderRadius.circular(9),

@@ -32,7 +32,7 @@ class ListPage extends StatelessWidget {
                 height: 24,
               ),
               const Text(
-                'Choose your awesome agents',
+                'Choose your Favourite Agents',
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   color: Colors.white,
@@ -47,15 +47,15 @@ class ListPage extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   TabItem(
-                    title: 'Popular',
+                    title: 'Agents',
                     checked: true,
                   ),
                   TabItem(
-                    title: 'New One',
+                    title: 'Maps',
                     checked: false,
                   ),
                   TabItem(
-                    title: 'Trending',
+                    title: 'Arsenal',
                     checked: false,
                   ),
                 ],
@@ -70,94 +70,75 @@ class ListPage extends StatelessWidget {
                 builder: (context, state) {
                   if (state is AgentsLoadedState) {
                     return SizedBox(
-                      height: 600,
-                      child: GridView.builder(
+                      height: MediaQuery.of(context).size.height * .45,
+                      child: ListView.builder(
                         shrinkWrap: true,
+                        scrollDirection: Axis.horizontal,
                         itemCount: state.data.length,
-                        gridDelegate:
-                            const SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: 2,
-                                crossAxisSpacing: 8,
-                                mainAxisSpacing: 4),
                         itemBuilder: (BuildContext context, int index) {
-                          return GestureDetector(
-                            onTap: () async {
-                              context.push('/detail',
-                                  extra: state.data[index].uuid);
-                            },
-                            child: Stack(
-                              children: [
-                                ClipPath(
-                                  clipper: CustomClipPath(),
-                                  child: Container(
-                                    height: 250,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(20),
-                                      color: Color.alphaBlend(
-                                          octToColor(state.data[index]
-                                              .backgroundGradientColors![1]),
-                                          octToColor(state.data[index]
-                                              .backgroundGradientColors![3])),
-                                      // gradient: LinearGradient(
-                                      //   begin: Alignment.topCenter,
-                                      //   end: Alignment.bottomCenter,
-                                      //   colors: [
-                                      //     octToColor(state.data[index]
-                                      //         .backgroundGradientColors![0]),
-                                      //     octToColor(state.data[index]
-                                      //         .backgroundGradientColors![1]),
-                                      //     octToColor(state.data[index]
-                                      //         .backgroundGradientColors![2]),
-                                      //     octToColor(state.data[index]
-                                      //         .backgroundGradientColors![3]),
-                                      //   ],
-                                      //   tileMode: TileMode.decal,
-                                      // ),
-                                      shape: BoxShape.rectangle,
+                          return Container(
+                            decoration: BoxDecoration(
+                              color: Colors.red,
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(
+                                  12,
+                                ),
+                              ),
+                            ),
+                            height: MediaQuery.of(context).size.height * .4,
+                            width: MediaQuery.of(context).size.width * .7,
+                            child: GestureDetector(
+                              onTap: () async {
+                                context.push('/detail',
+                                    extra: state.data[index].uuid);
+                              },
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  CachedNetworkImage(
+                                    height:
+                                        MediaQuery.of(context).size.height * .35,
+                                    fit: BoxFit.cover,
+                                    imageUrl:
+                                        'https://media.valorant-api.com/agents/${state.data[index].uuid}/fullportrait.png',
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(
+                                        top: 8.0, left: 8),
+                                    child: Text(
+                                      state.data[index].displayName!,
+                                      style: const TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 22,
+                                          color: Colors.white),
                                     ),
                                   ),
-                                ),
-                                CachedNetworkImage(
-                                  height: 600,
-                                  fit: BoxFit.cover,
-                                  imageUrl:
-                                      'https://media.valorant-api.com/agents/${state.data[index].uuid}/fullportrait.png',
-                                ),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    const SizedBox(
-                                      height: 105,
+                                  Container(
+                                    height: 3,
+                                    width: 70,
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.rectangle,
+                                      borderRadius: BorderRadius.circular(9),
+                                      color: Colors.grey,
                                     ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(
-                                          top: 8.0, left: 8),
-                                      child: Text(
-                                        state.data[index].displayName!,
-                                        style: const TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 22,
-                                            color: Colors.white),
-                                      ),
-                                    ),
-                                    if (state.data[index].role != null)
-                                      Expanded(
-                                        child: Padding(
-                                          padding:
-                                              const EdgeInsets.only(left: 8.0),
-                                          child: Text(
-                                            state.data[index].role!
-                                                    .displayName! ??
-                                                "",
-                                            style: const TextStyle(
-                                                fontSize: 18,
-                                                color: Colors.white),
-                                          ),
+                                  ),
+                                  if (state.data[index].role != null)
+                                    Expanded(
+                                      child: Padding(
+                                        padding:
+                                            const EdgeInsets.only(left: 8.0),
+                                        child: Text(
+                                          state.data[index].role!
+                                                  .displayName! ??
+                                              "",
+                                          style: const TextStyle(
+                                              fontSize: 18,
+                                              color: Colors.white),
                                         ),
                                       ),
-                                  ],
-                                )
-                              ],
+                                    ),
+                                ],
+                              ),
                             ),
                           );
                         },
