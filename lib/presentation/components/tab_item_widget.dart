@@ -23,7 +23,7 @@ class TabItem extends StatelessWidget {
                       0xFFDD3B4F,
                     )
                   : Colors.grey,
-              fontSize: 24),
+              fontSize: 16,fontWeight: FontWeight.w600),
         ),
         const SizedBox(
           height: 8,

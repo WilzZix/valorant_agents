@@ -46,6 +46,7 @@ dependencies:
   shimmer: ^3.0.0
   firebase_core: ^2.15.1
   firebase_auth: ^4.9.0
+  carousel_slider: ^4.2.1
 dev_dependencies:
   flutter_test:
     sdk: flutter

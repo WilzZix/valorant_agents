@@ -32,29 +32,39 @@ class ListPage extends StatelessWidget {
                 height: 24,
               ),
               const Text(
-                'Choose your Favourite Agents',
+                'Choose Your\n Favourite Agents',
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   color: Colors.white,
-                  fontSize: 40,
+                  fontSize: 30,
                   fontWeight: FontWeight.bold,
                 ),
               ),
               const SizedBox(
                 height: 24,
               ),
-              const Row(
+              Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  TabItem(
+                  const TabItem(
                     title: 'Agents',
                     checked: true,
                   ),
-                  TabItem(
+                  Container(
+                    height: 16,
+                    width: 1,
+                    decoration: const BoxDecoration(color: Colors.grey),
+                  ),
+                  const TabItem(
                     title: 'Maps',
                     checked: false,
                   ),
-                  TabItem(
+                  Container(
+                    height: 16,
+                    width: 1,
+                    decoration: const BoxDecoration(color: Colors.grey),
+                  ),
+                  const TabItem(
                     title: 'Arsenal',
                     checked: false,
                   ),
@@ -70,75 +80,109 @@ class ListPage extends StatelessWidget {
                 builder: (context, state) {
                   if (state is AgentsLoadedState) {
                     return SizedBox(
-                      height: MediaQuery.of(context).size.height * .45,
+                      height: MediaQuery.of(context).size.height * .4,
                       child: ListView.builder(
                         shrinkWrap: true,
                         scrollDirection: Axis.horizontal,
                         itemCount: state.data.length,
                         itemBuilder: (BuildContext context, int index) {
-                          return Container(
-                            decoration: BoxDecoration(
-                              color: Colors.red,
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(
-                                  12,
-                                ),
-                              ),
-                            ),
-                            height: MediaQuery.of(context).size.height * .4,
-                            width: MediaQuery.of(context).size.width * .7,
-                            child: GestureDetector(
-                              onTap: () async {
-                                context.push('/detail',
-                                    extra: state.data[index].uuid);
-                              },
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  CachedNetworkImage(
-                                    height:
-                                        MediaQuery.of(context).size.height * .35,
-                                    fit: BoxFit.cover,
-                                    imageUrl:
-                                        'https://media.valorant-api.com/agents/${state.data[index].uuid}/fullportrait.png',
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(
-                                        top: 8.0, left: 8),
-                                    child: Text(
-                                      state.data[index].displayName!,
-                                      style: const TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 22,
-                                          color: Colors.white),
-                                    ),
-                                  ),
-                                  Container(
-                                    height: 3,
-                                    width: 70,
-                                    decoration: BoxDecoration(
-                                      shape: BoxShape.rectangle,
-                                      borderRadius: BorderRadius.circular(9),
-                                      color: Colors.grey,
-                                    ),
-                                  ),
-                                  if (state.data[index].role != null)
-                                    Expanded(
-                                      child: Padding(
-                                        padding:
-                                            const EdgeInsets.only(left: 8.0),
-                                        child: Text(
-                                          state.data[index].role!
-                                                  .displayName! ??
-                                              "",
-                                          style: const TextStyle(
-                                              fontSize: 18,
-                                              color: Colors.white),
-                                        ),
+                          Color color = HexColor.fromHex(
+                              '#${state.data[index].backgroundGradientColors![1]}');
+                          return Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Stack(
+                              children: [
+                                Container(
+                                  decoration: BoxDecoration(
+                                    color: color,
+                                    borderRadius: const BorderRadius.all(
+                                      Radius.circular(
+                                        12,
                                       ),
                                     ),
-                                ],
-                              ),
+                                  ),
+                                  height:
+                                      MediaQuery.of(context).size.height * .4,
+                                  width: MediaQuery.of(context).size.width * .7,
+                                  child: GestureDetector(
+                                    onTap: () async {
+                                      context.push('/detail',
+                                          extra: state.data[index].uuid);
+                                    },
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        CachedNetworkImage(
+                                          height: MediaQuery.of(context)
+                                                  .size
+                                                  .height *
+                                              .38,
+                                          fit: BoxFit.cover,
+                                          imageUrl:
+                                              'https://media.valorant-api.com/agents/${state.data[index].uuid}/fullportrait.png',
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                Align(
+                                  alignment: Alignment.bottomCenter,
+                                  child: Container(
+                                    width:
+                                        MediaQuery.of(context).size.width * .7,
+                                    height: 70,
+                                    decoration: BoxDecoration(
+                                      borderRadius: const BorderRadius.all(
+                                        Radius.circular(
+                                          12,
+                                        ),
+                                      ),
+                                      color: Colors.white.withOpacity(.5),
+                                    ),
+                                    child: Column(
+                                      children: [
+                                        Padding(
+                                          padding: const EdgeInsets.only(
+                                              top: 8.0, left: 8),
+                                          child: Text(
+                                            state.data[index].displayName!,
+                                            style: const TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 22,
+                                                color: Colors.white),
+                                          ),
+                                        ),
+                                        Container(
+                                          height: 3,
+                                          width: 70,
+                                          decoration: BoxDecoration(
+                                            shape: BoxShape.rectangle,
+                                            borderRadius:
+                                                BorderRadius.circular(9),
+                                            color: Colors.grey,
+                                          ),
+                                        ),
+                                        if (state.data[index].role != null)
+                                          Expanded(
+                                            child: Padding(
+                                              padding: const EdgeInsets.only(
+                                                  left: 8.0),
+                                              child: Text(
+                                                state.data[index].role!
+                                                        .displayName! ??
+                                                    "",
+                                                style: const TextStyle(
+                                                    fontSize: 12,
+                                                    color: Colors.white),
+                                              ),
+                                            ),
+                                          ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
                           );
                         },
@@ -154,4 +198,21 @@ class ListPage extends StatelessWidget {
       ),
     );
   }
+}
+
+extension HexColor on Color {
+  /// String is in the format "aabbcc" or "ffaabbcc" with an optional leading "#".
+  static Color fromHex(String hexString) {
+    final buffer = StringBuffer();
+    if (hexString.length == 6 || hexString.length == 7) buffer.write('ff');
+    buffer.write(hexString.replaceFirst('#', ''));
+    return Color(int.parse(buffer.toString(), radix: 16));
+  }
+
+  /// Prefixes a hash sign if [leadingHashSign] is set to `true` (default is `true`).
+  String toHex({bool leadingHashSign = true}) => '${leadingHashSign ? '#' : ''}'
+      '${alpha.toRadixString(16).padLeft(2, '0')}'
+      '${red.toRadixString(16).padLeft(2, '0')}'
+      '${green.toRadixString(16).padLeft(2, '0')}'
+      '${blue.toRadixString(16).padLeft(2, '0')}';
 }
