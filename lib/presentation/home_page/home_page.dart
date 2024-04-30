@@ -27,37 +27,6 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // bottomNavigationBar: BottomNavigationBar(
-      //   onTap: (value) {
-      //     setState(() {
-      //       selectedIndex = value;
-      //     });
-      //   },
-      //   currentIndex: selectedIndex,
-      //   items: const [
-      //     BottomNavigationBarItem(
-      //       label: 'Home',
-      //       icon: Icon(
-      //         Icons.home,
-      //         color: Colors.black,
-      //       ),
-      //     ),
-      //     BottomNavigationBarItem(
-      //       label: 'Favourite',
-      //       icon: Icon(
-      //         Icons.favorite,
-      //         color: Colors.black,
-      //       ),
-      //     ),
-      //     BottomNavigationBarItem(
-      //       label: 'Profile',
-      //       icon: Icon(
-      //         Icons.person,
-      //         color: Colors.black,
-      //       ),
-      //     ),
-      //   ],
-      // ),
       backgroundColor: const Color(0xFF0D131A),
       body: _buildBody[selectedIndex],
     );

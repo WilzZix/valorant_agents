@@ -24,7 +24,6 @@ class _LoginScreenState extends State<LoginScreen> {
       body: BlocListener<AuthBloc, AuthState>(
         listener: (context, state) {
           if (state is LoggedInState) {
-            log('line 26');
             Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => const HomePage()),
@@ -46,11 +45,6 @@ class _LoginScreenState extends State<LoginScreen> {
         child: ListView(
           padding: const EdgeInsets.all(20),
           children: [
-            Image.asset(
-              'assets/register.jpg',
-              height: 400,
-              width: 400,
-            ),
             const Text(
               'Sign in',
               style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
