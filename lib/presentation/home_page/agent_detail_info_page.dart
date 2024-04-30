@@ -1,7 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:volarant_agents/application/agents/agents_bloc.dart';
 
@@ -44,7 +43,7 @@ class _AgentDetailInfoPageState extends State<AgentDetailInfoPage> {
                       child: Stack(
                         children: [
                           Image.network(
-                            state.data.fullPortrait! ?? '',
+                            state.data.fullPortrait!,
                             opacity: const AlwaysStoppedAnimation(.2),
                           ),
                           Row(
@@ -52,27 +51,26 @@ class _AgentDetailInfoPageState extends State<AgentDetailInfoPage> {
                               Center(
                                 child: Padding(
                                   padding:
-                                      EdgeInsets.only(top: 100.h, left: 16.w),
+                                      const EdgeInsets.only(top: 100, left: 16),
                                   child: Column(
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     children: [
                                       Text(
                                         state.data.displayName!,
-                                        style: TextStyle(
-                                            fontSize: 42.sp,
-                                            color: Colors.white),
+                                        style: const TextStyle(
+                                            fontSize: 42, color: Colors.white),
                                       ),
-                                      SizedBox(
-                                        height: 8.h,
+                                      const SizedBox(
+                                        height: 8,
                                       ),
                                       Container(
-                                        height: 32.h,
-                                        width: 100.w,
-                                        decoration: BoxDecoration(
-                                            color: const Color(0xFF16163F),
+                                        height: 32,
+                                        width: 100,
+                                        decoration: const BoxDecoration(
+                                            color: Color(0xFF16163F),
                                             shape: BoxShape.rectangle,
                                             borderRadius: BorderRadius.all(
-                                                Radius.circular(8.r))),
+                                                Radius.circular(8))),
                                         child: Center(
                                           child: Text(
                                             state.data.role!.displayName!,
@@ -87,7 +85,7 @@ class _AgentDetailInfoPageState extends State<AgentDetailInfoPage> {
                               ),
                               Expanded(
                                 child: CachedNetworkImage(
-                                  imageUrl: state.data.fullPortrait! ?? '',
+                                  imageUrl: state.data.fullPortrait!,
                                 ),
                               )
                             ],
@@ -101,8 +99,8 @@ class _AgentDetailInfoPageState extends State<AgentDetailInfoPage> {
                     height: MediaQuery.of(context).size.height * 0.7,
                     color: const Color(0xFF0C1217),
                     child: Padding(
-                      padding: EdgeInsets.symmetric(
-                          horizontal: 16.h, vertical: 16.w),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 16, vertical: 16),
                       child: SingleChildScrollView(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -202,7 +200,7 @@ class LoadingWidget extends StatelessWidget {
                 children: [
                   Center(
                     child: Padding(
-                      padding: EdgeInsets.only(top: 100.h, left: 16.w),
+                      padding: const EdgeInsets.only(top: 100, left: 16),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
@@ -213,20 +211,22 @@ class LoadingWidget extends StatelessWidget {
                               '',
                             ),
                           ),
-                          SizedBox(
-                            height: 8.h,
+                          const SizedBox(
+                            height: 8,
                           ),
                           Shimmer.fromColors(
                             baseColor: Colors.grey.shade300,
                             highlightColor: Colors.grey.shade100,
                             child: Container(
-                              height: 32.h,
-                              width: 100.w,
-                              decoration: BoxDecoration(
-                                  color: const Color(0xFF16163F),
-                                  shape: BoxShape.rectangle,
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(8.r))),
+                              height: 32,
+                              width: 100,
+                              decoration: const BoxDecoration(
+                                color: Color(0xFF16163F),
+                                shape: BoxShape.rectangle,
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(8),
+                                ),
+                              ),
                               child: const Center(
                                 child: Text(
                                   '',
@@ -249,9 +249,9 @@ class LoadingWidget extends StatelessWidget {
             width: double.infinity,
             height: MediaQuery.of(context).size.height * 0.7,
             color: const Color(0xFF0C1217),
-            child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16.h, vertical: 16.w),
-              child: const SingleChildScrollView(
+            child: const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+              child: SingleChildScrollView(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -375,7 +375,7 @@ class AgentAbilityWidget extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  title!,
+                  title,
                   style: const TextStyle(color: Colors.white),
                 ),
                 const SizedBox(
@@ -435,7 +435,7 @@ class AgentAbilityLoadingWidget extends StatelessWidget {
                 child: Shimmer.fromColors(
                   baseColor: Colors.grey.shade300,
                   highlightColor: Colors.grey.shade100,
-                  child: SizedBox(),
+                  child: const SizedBox(),
                 ),
               ),
             ),
@@ -453,7 +453,7 @@ class AgentAbilityLoadingWidget extends StatelessWidget {
                   baseColor: Colors.grey.shade300,
                   highlightColor: Colors.grey.shade100,
                   child: Text(
-                    title!,
+                    title,
                     style: const TextStyle(color: Colors.white),
                   ),
                 ),

@@ -1,7 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:volarant_agents/application/agents/agents_bloc.dart';
 import 'package:volarant_agents/application/app_manager/app_manager_cubit.dart';
@@ -39,26 +38,21 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return ScreenUtilInit(
-      designSize: const Size(375, 812),
-      builder: (context, widget) {
-        return MultiBlocProvider(
-          providers: [
-            BlocProvider(create: (context) => UserBloc()),
-            BlocProvider(
-              create: (context) => AppManagerCubit()..initApp(),
-            ),
-            BlocProvider(
-              create: (context) => AgentsBloc()..add(GetAgentsEvent()),
-            ),
-            BlocProvider(create: (context) => AuthBloc()),
-          ],
-          child: MaterialApp.router(
-            debugShowCheckedModeBanner: false,
-            routerConfig: _router,
-          ),
-        );
-      },
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (context) => UserBloc()),
+        BlocProvider(
+          create: (context) => AppManagerCubit()..initApp(),
+        ),
+        BlocProvider(
+          create: (context) => AgentsBloc()..add(GetAgentsEvent()),
+        ),
+        BlocProvider(create: (context) => AuthBloc()),
+      ],
+      child: MaterialApp.router(
+        debugShowCheckedModeBanner: false,
+        routerConfig: _router,
+      ),
     );
   }
 }
