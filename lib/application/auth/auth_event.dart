@@ -16,3 +16,9 @@ class RegisterWithEmailAndPassword extends AuthEvent {
 
   RegisterWithEmailAndPassword(this.email, this.password);
 }
+
+class UpdateUserNameEvent extends AuthEvent {
+  final String name;
+
+  UpdateUserNameEvent(this.name);
+}

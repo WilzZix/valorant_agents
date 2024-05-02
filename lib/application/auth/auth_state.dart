@@ -18,3 +18,11 @@ class LoginErrorState extends AuthState {
 
   LoginErrorState(this.msg);
 }
+
+class UserDisplayNameUpdated extends AuthState {}
+
+class UserDisplayNameUpdatingError extends AuthState {
+  final String msg;
+
+  UserDisplayNameUpdatingError(this.msg);
+}

@@ -12,9 +12,9 @@ part 'auth_state.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
   AuthBloc() : super(AuthInitial()) {
+    AuthRepository repository = AuthRepository();
     on<LoginWithEmailAndPasswordEvent>((event, emit) async {
       try {
-        AuthRepository repository = AuthRepository();
         emit(LoginInProgressState());
         UserModel data = await repository.login(event.email, event.password);
         emit(LoggedInState(data));
@@ -29,6 +29,14 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       } catch (e) {
         log('line 39');
         emit(LoginErrorState(e.toString()));
+      }
+    });
+    on<UpdateUserNameEvent>((event, emit) async {
+      try {
+        await repository.updateUserDisplayName(event.name);
+        emit(UserDisplayNameUpdated());
+      } catch (e) {
+        emit(UserDisplayNameUpdatingError(e.toString()));
       }
     });
   }

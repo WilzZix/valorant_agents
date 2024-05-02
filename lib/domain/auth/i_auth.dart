@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:volarant_agents/infrastructure/dto/user_model.dart';
 
 abstract class IAuth {
@@ -7,4 +6,8 @@ abstract class IAuth {
   Future<UserModel> login(String email, String password);
 
   Future logOut();
+
+  Future<void> updateUserDisplayName(String name);
+
+  Future<UserModel> getUserInfo();
 }

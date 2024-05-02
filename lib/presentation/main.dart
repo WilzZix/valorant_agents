@@ -5,12 +5,15 @@ import 'package:go_router/go_router.dart';
 import 'package:volarant_agents/application/agents/agents_bloc.dart';
 import 'package:volarant_agents/application/app_manager/app_manager_cubit.dart';
 import 'package:volarant_agents/application/auth/auth_bloc.dart';
+import 'package:volarant_agents/application/home_page/home_page_cubit.dart';
 import 'package:volarant_agents/application/user/user_bloc.dart';
 import 'package:volarant_agents/firebase_options.dart';
-import 'package:volarant_agents/presentation/auth/login/login_page.dart';
-import 'package:volarant_agents/presentation/auth/registration/register_page.dart';
 import 'package:volarant_agents/presentation/home_page/agent_detail_info_page.dart';
 import 'package:volarant_agents/presentation/home_page/home_page.dart';
+import 'package:volarant_agents/presentation/pages/auth/login/login_page.dart';
+import 'package:volarant_agents/presentation/pages/auth/registration/register_page.dart';
+
+import 'pages/auth/login/enter_display_name.dart';
 
 void main() {
   runApp(const MyApp());
@@ -48,6 +51,7 @@ class _MyAppState extends State<MyApp> {
           create: (context) => AgentsBloc()..add(GetAgentsEvent()),
         ),
         BlocProvider(create: (context) => AuthBloc()),
+        BlocProvider(create: (context) => HomePageCubit())
       ],
       child: MaterialApp.router(
         debugShowCheckedModeBanner: false,
@@ -77,6 +81,10 @@ final _router = GoRouter(
     GoRoute(
       path: '/register',
       builder: (context, state) => const RegisterScreen(),
+    ),
+    GoRoute(
+      path: '/enter-display-name',
+      builder: (context, state) => const EnterDisplayName(),
     ),
   ],
 );

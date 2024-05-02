@@ -12,6 +12,11 @@ class UserRepository implements IUser {
     UserCredential data = await FireBaseService.auth
         .createUserWithEmailAndPassword(email: email, password: password);
     log('line 14 $data');
-    return UserModel(data.user!.email!, '', '', '');
+    return UserModel(
+      email: data.user!.email!,
+      phoneNumber: '',
+      refreshToken: '',
+      displayName: '',
+    );
   }
 }

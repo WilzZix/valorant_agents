@@ -1,44 +1,36 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
-import 'package:volarant_agents/application/auth/auth_bloc.dart';
-import 'package:volarant_agents/presentation/home_page/home_page.dart';
+import 'package:volarant_agents/application/user/user_bloc.dart';
+import 'package:volarant_agents/presentation/pages/auth/login/login_page.dart';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({Key? key}) : super(key: key);
+class RegisterScreen extends StatefulWidget {
+  const RegisterScreen({Key? key}) : super(key: key);
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  State<RegisterScreen> createState() => _RegisterScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _RegisterScreenState extends State<RegisterScreen> {
   TextEditingController emailTextController = TextEditingController();
   TextEditingController passwordTextController = TextEditingController();
   TextEditingController nameController = TextEditingController();
-  bool isLoading = false;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF0D131A),
       appBar: AppBar(
         backgroundColor: const Color(0xFF0D131A),
       ),
-      body: BlocListener<AuthBloc, AuthState>(
+      backgroundColor: const Color(0xFF0D131A),
+      body: BlocListener<UserBloc, UserState>(
         listener: (context, state) {
-          if (state is LoginInProgressState) {
-            setState(() {
-              isLoading = true;
-            });
-          }
-          if (state is LoggedInState) {
+          if (state is UserCreatedState) {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => const HomePage()),
+              MaterialPageRoute(builder: (context) => const LoginScreen()),
             );
           }
-          if (state is LoginErrorState) {
-            isLoading = false;
+          if (state is UserCreateFailureState) {
             showBottomSheet(
                 context: context,
                 builder: (context) {
@@ -55,25 +47,38 @@ class _LoginScreenState extends State<LoginScreen> {
           padding: const EdgeInsets.all(20),
           children: [
             const Text(
-              'Sign in',
+              'Sign up',
               style: TextStyle(
-                fontSize: 30,
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
-              ),
+                  fontSize: 30,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white),
             ),
             const SizedBox(
               height: 16,
             ),
-            const SizedBox(
-              height: 20,
-            ),
-            const Center(
-              child: Text(
-                'Or, register with email...',
-                style: TextStyle(color: Colors.white),
-              ),
-            ),
+            // const Row(
+            //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //   children: [
+            //     SignInMethodWidget(
+            //       path: 'assets/google.png',
+            //     ),
+            //     SignInMethodWidget(
+            //       path: 'assets/apple.png',
+            //     ),
+            //     SignInMethodWidget(
+            //       path: 'assets/facebook.png',
+            //     ),
+            //   ],
+            // ),
+            // const SizedBox(
+            //   height: 20,
+            // ),
+            // const Center(
+            //   child: Text(
+            //     'Or, register with email...',
+            //     style: TextStyle(color: Colors.white),
+            //   ),
+            // ),
             const SizedBox(
               height: 16,
             ),
@@ -98,9 +103,6 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
             TextFormField(
               style: const TextStyle(color: Colors.white),
-              obscureText: true,
-              enableSuggestions: false,
-              autocorrect: false,
               onChanged: (value) {
                 passwordTextController.text = value;
               },
@@ -122,45 +124,8 @@ class _LoginScreenState extends State<LoginScreen> {
               height: 40,
               child: TextButton(
                 onPressed: () {
-                  if (!isLoading) {
-                    BlocProvider.of<AuthBloc>(context).add(
-                      LoginWithEmailAndPasswordEvent(
-                        emailTextController.text,
-                        passwordTextController.text,
-                      ),
-                    );
-                  }
-                },
-                style: isLoading
-                    ? ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all<Color>(
-                          const Color(0x4B1A5CC1),
-                        ),
-                      )
-                    : ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all<Color>(
-                          const Color(0xFF49F5DC),
-                        ),
-                      ),
-                child: isLoading
-                    ? const CircularProgressIndicator()
-                    : const Text(
-                        'Sign in',
-                        style: TextStyle(color: Colors.black),
-                      ),
-              ),
-            ),
-            const SizedBox(
-              height: 16,
-            ),
-            const SizedBox(
-              height: 16,
-            ),
-            SizedBox(
-              height: 40,
-              child: TextButton(
-                onPressed: () {
-                  context.go('/register');
+                  BlocProvider.of<UserBloc>(context).add(CreateUserEvent(
+                      emailTextController.text, passwordTextController.text));
                 },
                 style: ButtonStyle(
                   backgroundColor: MaterialStateProperty.all<Color>(
@@ -168,16 +133,51 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ),
                 child: const Text(
-                  'Create account',
-                  style: TextStyle(color: Colors.black),
+                  'Sign up',
+                  style: TextStyle(color: Colors.white),
                 ),
               ),
             ),
             const SizedBox(
               height: 16,
             ),
+            const SizedBox(
+              height: 16,
+            ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class SignInMethodWidget extends StatelessWidget {
+  const SignInMethodWidget({
+    Key? key,
+    required this.path,
+  }) : super(key: key);
+  final String path;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        shape: BoxShape.rectangle,
+        border: Border.all(
+          color: Colors.grey,
+        ),
+        borderRadius: const BorderRadius.all(
+          Radius.circular(
+            16,
+          ),
+        ),
+      ),
+      height: 60,
+      width: 60,
+      child: Image.asset(
+        path,
+        width: 20,
+        height: 20,
       ),
     );
   }
