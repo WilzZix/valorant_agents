@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -17,12 +15,22 @@ class _LoginScreenState extends State<LoginScreen> {
   TextEditingController emailTextController = TextEditingController();
   TextEditingController passwordTextController = TextEditingController();
   TextEditingController nameController = TextEditingController();
+  bool isLoading = false;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color(0xFF0D131A),
+      appBar: AppBar(
+        backgroundColor: const Color(0xFF0D131A),
+      ),
       body: BlocListener<AuthBloc, AuthState>(
         listener: (context, state) {
+          if (state is LoginInProgressState) {
+            setState(() {
+              isLoading = true;
+            });
+          }
           if (state is LoggedInState) {
             Navigator.push(
               context,
@@ -30,6 +38,7 @@ class _LoginScreenState extends State<LoginScreen> {
             );
           }
           if (state is LoginErrorState) {
+            isLoading = false;
             showBottomSheet(
                 context: context,
                 builder: (context) {
@@ -47,24 +56,14 @@ class _LoginScreenState extends State<LoginScreen> {
           children: [
             const Text(
               'Sign in',
-              style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+              style: TextStyle(
+                fontSize: 30,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+              ),
             ),
             const SizedBox(
               height: 16,
-            ),
-            const Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                SignInMethodWidget(
-                  path: 'assets/google.png',
-                ),
-                SignInMethodWidget(
-                  path: 'assets/apple.png',
-                ),
-                SignInMethodWidget(
-                  path: 'assets/facebook.png',
-                ),
-              ],
             ),
             const SizedBox(
               height: 20,
@@ -72,17 +71,22 @@ class _LoginScreenState extends State<LoginScreen> {
             const Center(
               child: Text(
                 'Or, register with email...',
+                style: TextStyle(color: Colors.white),
               ),
             ),
             const SizedBox(
               height: 16,
             ),
             TextFormField(
+              style: const TextStyle(color: Colors.white),
               onChanged: (value) {
                 emailTextController.text = value;
               },
               controller: emailTextController,
               decoration: const InputDecoration(
+                border: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.black, width: 2),
+                ),
                 labelText: 'Email',
                 prefixIcon: Icon(
                   Icons.mail,
@@ -93,11 +97,18 @@ class _LoginScreenState extends State<LoginScreen> {
               height: 8,
             ),
             TextFormField(
+              style: const TextStyle(color: Colors.white),
+              obscureText: true,
+              enableSuggestions: false,
+              autocorrect: false,
               onChanged: (value) {
                 passwordTextController.text = value;
               },
               controller: passwordTextController,
               decoration: const InputDecoration(
+                border: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.black, width: 2),
+                ),
                 labelText: 'Password',
                 prefixIcon: Icon(
                   Icons.lock,
@@ -111,19 +122,32 @@ class _LoginScreenState extends State<LoginScreen> {
               height: 40,
               child: TextButton(
                 onPressed: () {
-                  log('line 92');
-                  BlocProvider.of<AuthBloc>(context).add(
-                      LoginWithEmailAndPasswordEvent(emailTextController.text,
-                          passwordTextController.text));
-                  log('line 99');
+                  if (!isLoading) {
+                    BlocProvider.of<AuthBloc>(context).add(
+                      LoginWithEmailAndPasswordEvent(
+                        emailTextController.text,
+                        passwordTextController.text,
+                      ),
+                    );
+                  }
                 },
-                style: ButtonStyle(
-                    backgroundColor:
-                        MaterialStateProperty.all<Color>(Colors.blue)),
-                child: const Text(
-                  'Sign in',
-                  style: TextStyle(color: Colors.white),
-                ),
+                style: isLoading
+                    ? ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all<Color>(
+                          const Color(0x4B1A5CC1),
+                        ),
+                      )
+                    : ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all<Color>(
+                          const Color(0xFF49F5DC),
+                        ),
+                      ),
+                child: isLoading
+                    ? const CircularProgressIndicator()
+                    : const Text(
+                        'Sign in',
+                        style: TextStyle(color: Colors.black),
+                      ),
               ),
             ),
             const SizedBox(
@@ -139,11 +163,13 @@ class _LoginScreenState extends State<LoginScreen> {
                   context.go('/register');
                 },
                 style: ButtonStyle(
-                    backgroundColor:
-                        MaterialStateProperty.all<Color>(Colors.blue)),
+                  backgroundColor: MaterialStateProperty.all<Color>(
+                    const Color(0xFF49F5DC),
+                  ),
+                ),
                 child: const Text(
                   'Create account',
-                  style: TextStyle(color: Colors.white),
+                  style: TextStyle(color: Colors.black),
                 ),
               ),
             ),
@@ -152,38 +178,6 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
           ],
         ),
-      ),
-    );
-  }
-}
-
-class SignInMethodWidget extends StatelessWidget {
-  const SignInMethodWidget({
-    Key? key,
-    required this.path,
-  }) : super(key: key);
-  final String path;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        shape: BoxShape.rectangle,
-        border: Border.all(
-          color: Colors.grey,
-        ),
-        borderRadius: const BorderRadius.all(
-          Radius.circular(
-            16,
-          ),
-        ),
-      ),
-      height: 60,
-      width: 60,
-      child: Image.asset(
-        path,
-        width: 20,
-        height: 20,
       ),
     );
   }

@@ -18,6 +18,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: const Color(0xFF0D131A),
+      ),
+      backgroundColor: const Color(0xFF0D131A),
       body: BlocListener<UserBloc, UserState>(
         listener: (context, state) {
           if (state is UserCreatedState) {
@@ -42,14 +46,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
         child: ListView(
           padding: const EdgeInsets.all(20),
           children: [
-            Image.asset(
-              'assets/register.jpg',
-              height: 400,
-              width: 400,
-            ),
             const Text(
               'Sign up',
-              style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+              style: TextStyle(
+                  fontSize: 30,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white),
             ),
             const SizedBox(
               height: 16,
@@ -74,17 +76,22 @@ class _RegisterScreenState extends State<RegisterScreen> {
             const Center(
               child: Text(
                 'Or, register with email...',
+                style: TextStyle(color: Colors.white),
               ),
             ),
             const SizedBox(
               height: 16,
             ),
             TextFormField(
+              style: const TextStyle(color: Colors.white),
               onChanged: (value) {
                 emailTextController.text = value;
               },
               controller: emailTextController,
               decoration: const InputDecoration(
+                border: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.black, width: 2),
+                ),
                 labelText: 'Email',
                 prefixIcon: Icon(
                   Icons.mail,
@@ -95,11 +102,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
               height: 8,
             ),
             TextFormField(
+              style: const TextStyle(color: Colors.white),
               onChanged: (value) {
                 passwordTextController.text = value;
               },
               controller: passwordTextController,
               decoration: const InputDecoration(
+                border: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.black, width: 2),
+                ),
                 labelText: 'Password',
                 prefixIcon: Icon(
                   Icons.lock,
@@ -113,12 +124,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
               height: 40,
               child: TextButton(
                 onPressed: () {
-                  BlocProvider.of<UserBloc>(context)
-                      .add(CreateUserEvent(emailTextController.text, passwordTextController.text));
+                  BlocProvider.of<UserBloc>(context).add(CreateUserEvent(
+                      emailTextController.text, passwordTextController.text));
                 },
                 style: ButtonStyle(
-                    backgroundColor:
-                        MaterialStateProperty.all<Color>(Colors.blue)),
+                  backgroundColor: MaterialStateProperty.all<Color>(
+                    const Color(0xFF49F5DC),
+                  ),
+                ),
                 child: const Text(
                   'Sign up',
                   style: TextStyle(color: Colors.white),
