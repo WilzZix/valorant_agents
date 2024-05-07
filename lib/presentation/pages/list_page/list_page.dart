@@ -32,6 +32,7 @@ class _ListPageState extends State<ListPage> {
         builder: (context, state) {
           if (state is UserInfoLoaded) {
             displayName = state.userDate.displayName!;
+
           }
           return Padding(
             padding: const EdgeInsets.all(8.0),

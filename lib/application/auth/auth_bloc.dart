@@ -17,6 +17,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       try {
         emit(LoginInProgressState());
         UserModel data = await repository.login(event.email, event.password);
+        //TODO: save login state to sharedPrefService
         emit(LoggedInState(data));
       } on FirebaseAuthException catch (e) {
         if (e.code == 'user-not-found') {
