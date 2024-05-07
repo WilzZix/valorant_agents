@@ -7,4 +7,12 @@ class SharedPrefService {
     sharedPrefService = await SharedPreferences.getInstance();
     return sharedPrefService!;
   }
+
+  static Future<void> setLoginState(String key, bool value) async {
+    await sharedPrefService!.setBool(key, true);
+  }
+
+  static Future<bool> getLoginState(String key) async {
+    return sharedPrefService!.getBool(key)!;
+  }
 }

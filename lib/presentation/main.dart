@@ -8,6 +8,7 @@ import 'package:volarant_agents/application/auth/auth_bloc.dart';
 import 'package:volarant_agents/application/home_page/home_page_cubit.dart';
 import 'package:volarant_agents/application/user/user_bloc.dart';
 import 'package:volarant_agents/firebase_options.dart';
+import 'package:volarant_agents/infrastructure/services/shared_pref_service.dart';
 import 'package:volarant_agents/presentation/home_page/agent_detail_info_page.dart';
 import 'package:volarant_agents/presentation/home_page/home_page.dart';
 import 'package:volarant_agents/presentation/pages/auth/login/login_page.dart';
@@ -15,8 +16,9 @@ import 'package:volarant_agents/presentation/pages/auth/registration/register_pa
 
 import 'pages/auth/login/enter_display_name.dart';
 
-void main() {
+void main() async {
   runApp(const MyApp());
+  await SharedPrefService.init();
 }
 
 class MyApp extends StatefulWidget {
@@ -63,6 +65,13 @@ class _MyAppState extends State<MyApp> {
 
 final _router = GoRouter(
   initialLocation: '/login',
+  // redirect: (context, state) async {
+  //   if (await SharedPrefService.getLoginState('loginStatus')) {
+  //     return '/';
+  //   } else {
+  //     return '/login';
+  //   }
+  // },
   routes: [
     GoRoute(
       path: '/',

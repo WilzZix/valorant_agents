@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:meta/meta.dart';
 import 'package:volarant_agents/infrastructure/dto/user_model.dart';
 import 'package:volarant_agents/infrastructure/repositories/auth/auth_repository.dart';
+import 'package:volarant_agents/infrastructure/services/shared_pref_service.dart';
 
 part 'auth_event.dart';
 
@@ -17,7 +18,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       try {
         emit(LoginInProgressState());
         UserModel data = await repository.login(event.email, event.password);
-        //TODO: save login state to sharedPrefService
+        await SharedPrefService.setLoginState('loginStatus', true);
         emit(LoggedInState(data));
       } on FirebaseAuthException catch (e) {
         if (e.code == 'user-not-found') {
