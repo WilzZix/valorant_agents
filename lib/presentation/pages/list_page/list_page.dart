@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
@@ -32,7 +33,6 @@ class _ListPageState extends State<ListPage> {
         builder: (context, state) {
           if (state is UserInfoLoaded) {
             displayName = state.userDate.displayName!;
-
           }
           return Padding(
             padding: const EdgeInsets.all(8.0),
@@ -43,6 +43,7 @@ class _ListPageState extends State<ListPage> {
                     child: BlocBuilder<HomePageCubit, HomePageState>(
                       builder: (context, state) {
                         return Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
                             Text(
                               displayName,
@@ -53,7 +54,15 @@ class _ListPageState extends State<ListPage> {
                               width: 96,
                               height: 96,
                             ),
-                            const Icon(Icons.settings)
+                            GestureDetector(
+                              onTap: () {
+                                //TODO
+                              },
+                              child: const Icon(
+                                Icons.settings,
+                                color: Colors.white,
+                              ),
+                            )
                           ],
                         );
                       },

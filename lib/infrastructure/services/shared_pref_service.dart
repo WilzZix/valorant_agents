@@ -1,18 +1,26 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SharedPrefService {
-  static SharedPreferences? sharedPrefService;
+  static final SharedPrefService _sharedPrefService =
+      SharedPrefService._internal();
 
-  static Future<SharedPreferences> init() async {
-    sharedPrefService = await SharedPreferences.getInstance();
-    return sharedPrefService!;
+  SharedPrefService._internal();
+
+  factory SharedPrefService() {
+    return _sharedPrefService;
   }
 
-  static Future<void> setLoginState(String key, bool value) async {
-    await sharedPrefService!.setBool(key, true);
+  late final SharedPreferences _prefs;
+
+  Future<void> init() async {
+    _prefs = await SharedPreferences.getInstance();
   }
 
-  static Future<bool> getLoginState(String key) async {
-    return sharedPrefService!.getBool(key)!;
+  Future<void> setLoginState(String key, bool value) async {
+    await _prefs.setBool(key, true);
+  }
+
+  Future<bool> getLoginState(String key) async {
+    return _prefs.getBool(key)!;
   }
 }

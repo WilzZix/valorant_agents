@@ -14,11 +14,12 @@ part 'auth_state.dart';
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
   AuthBloc() : super(AuthInitial()) {
     AuthRepository repository = AuthRepository();
+    SharedPrefService sharedPrefService = SharedPrefService();
     on<LoginWithEmailAndPasswordEvent>((event, emit) async {
       try {
         emit(LoginInProgressState());
         UserModel data = await repository.login(event.email, event.password);
-        await SharedPrefService.setLoginState('loginStatus', true);
+        await sharedPrefService.setLoginState('loginStatus', true);
         emit(LoggedInState(data));
       } on FirebaseAuthException catch (e) {
         if (e.code == 'user-not-found') {

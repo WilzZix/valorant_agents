@@ -17,8 +17,9 @@ import 'package:volarant_agents/presentation/pages/auth/registration/register_pa
 import 'pages/auth/login/enter_display_name.dart';
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await SharedPrefService().init();
   runApp(const MyApp());
-  await SharedPrefService.init();
 }
 
 class MyApp extends StatefulWidget {
@@ -65,13 +66,14 @@ class _MyAppState extends State<MyApp> {
 
 final _router = GoRouter(
   initialLocation: '/login',
-  // redirect: (context, state) async {
-  //   if (await SharedPrefService.getLoginState('loginStatus')) {
-  //     return '/';
-  //   } else {
-  //     return '/login';
-  //   }
-  // },
+  redirect: (context, state) async {
+    SharedPrefService sharedPrefService = SharedPrefService();
+    if (await sharedPrefService.getLoginState('loginStatus')) {
+      return '/';
+    } else {
+      return '/login';
+    }
+  },
   routes: [
     GoRoute(
       path: '/',
