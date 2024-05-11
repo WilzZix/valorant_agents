@@ -1,12 +1,10 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:volarant_agents/application/agents/agents_bloc.dart';
 import 'package:volarant_agents/application/home_page/home_page_cubit.dart';
-import 'package:volarant_agents/presentation/components/tab_item_widget.dart';
 
 class ListPage extends StatefulWidget {
   const ListPage({
@@ -19,6 +17,7 @@ class ListPage extends StatefulWidget {
 
 class _ListPageState extends State<ListPage> {
   String displayName = '';
+  TextEditingController agentTextContr = TextEditingController();
 
   @override
   void initState() {
@@ -38,6 +37,7 @@ class _ListPageState extends State<ListPage> {
             padding: const EdgeInsets.all(8.0),
             child: SingleChildScrollView(
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Center(
                     child: BlocBuilder<HomePageCubit, HomePageState>(
@@ -69,11 +69,10 @@ class _ListPageState extends State<ListPage> {
                     ),
                   ),
                   const SizedBox(
-                    height: 24,
+                    height: 16,
                   ),
                   const Text(
-                    'Choose Your\n Favourite Agents',
-                    textAlign: TextAlign.center,
+                    'Learn Your\nFavourite Agents',
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 30,
@@ -81,37 +80,26 @@ class _ListPageState extends State<ListPage> {
                     ),
                   ),
                   const SizedBox(
-                    height: 24,
+                    height: 16,
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      const TabItem(
-                        title: 'Agents',
-                        checked: true,
+                  TextFormField(
+                    style: const TextStyle(color: Colors.white),
+                    onChanged: (value) {
+                      agentTextContr.text = value;
+                    },
+                    controller: agentTextContr,
+                    decoration: const InputDecoration(
+                      border: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.black, width: 2),
                       ),
-                      Container(
-                        height: 16,
-                        width: 1,
-                        decoration: const BoxDecoration(color: Colors.grey),
+                      labelText: 'Search Agent...',
+                      prefixIcon: Icon(
+                        Icons.search,
                       ),
-                      const TabItem(
-                        title: 'Maps',
-                        checked: false,
-                      ),
-                      Container(
-                        height: 16,
-                        width: 1,
-                        decoration: const BoxDecoration(color: Colors.grey),
-                      ),
-                      const TabItem(
-                        title: 'Arsenal',
-                        checked: false,
-                      ),
-                    ],
+                    ),
                   ),
                   const SizedBox(
-                    height: 24,
+                    height: 16,
                   ),
                   BlocBuilder<AgentsBloc, AgentsState>(
                     buildWhen: (context, state) {
@@ -120,10 +108,8 @@ class _ListPageState extends State<ListPage> {
                     builder: (context, state) {
                       if (state is AgentsLoadedState) {
                         return SizedBox(
-                          height: MediaQuery.of(context).size.height * .4,
-                          child: ListView.builder(
+                          child: GridView.builder(
                             shrinkWrap: true,
-                            scrollDirection: Axis.horizontal,
                             itemCount: state.data.length,
                             itemBuilder: (BuildContext context, int index) {
                               Color color = HexColor.fromHex(
@@ -141,11 +127,6 @@ class _ListPageState extends State<ListPage> {
                                           ),
                                         ),
                                       ),
-                                      height:
-                                          MediaQuery.of(context).size.height *
-                                              .4,
-                                      width: MediaQuery.of(context).size.width *
-                                          .7,
                                       child: GestureDetector(
                                         onTap: () async {
                                           context.push('/detail',
@@ -156,10 +137,6 @@ class _ListPageState extends State<ListPage> {
                                               CrossAxisAlignment.center,
                                           children: [
                                             CachedNetworkImage(
-                                              height: MediaQuery.of(context)
-                                                      .size
-                                                      .height *
-                                                  .38,
                                               fit: BoxFit.cover,
                                               imageUrl:
                                                   'https://media.valorant-api.com/agents/${state.data[index].uuid}/fullportrait.png',
@@ -171,10 +148,7 @@ class _ListPageState extends State<ListPage> {
                                     Align(
                                       alignment: Alignment.bottomCenter,
                                       child: Container(
-                                        width:
-                                            MediaQuery.of(context).size.width *
-                                                .7,
-                                        height: 70,
+                                        height: 35,
                                         decoration: BoxDecoration(
                                           borderRadius: const BorderRadius.all(
                                             Radius.circular(
@@ -187,7 +161,7 @@ class _ListPageState extends State<ListPage> {
                                           children: [
                                             Padding(
                                               padding: const EdgeInsets.only(
-                                                  top: 8.0, left: 8),
+                                                  left: 8),
                                               child: Text(
                                                 state.data[index].displayName!,
                                                 style: const TextStyle(
@@ -207,18 +181,15 @@ class _ListPageState extends State<ListPage> {
                                               ),
                                             ),
                                             if (state.data[index].role != null)
-                                              Expanded(
-                                                child: Padding(
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                          left: 8.0),
-                                                  child: Text(
-                                                    state.data[index].role!
-                                                        .displayName!,
-                                                    style: const TextStyle(
-                                                        fontSize: 12,
-                                                        color: Colors.white),
-                                                  ),
+                                              Padding(
+                                                padding: const EdgeInsets.only(
+                                                    left: 8.0),
+                                                child: Text(
+                                                  state.data[index].role!
+                                                      .displayName!,
+                                                  style: const TextStyle(
+                                                      fontSize: 12,
+                                                      color: Colors.white),
                                                 ),
                                               ),
                                           ],
@@ -229,6 +200,12 @@ class _ListPageState extends State<ListPage> {
                                 ),
                               );
                             },
+                            gridDelegate:
+                                const SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 2, // number of items in each row
+                              mainAxisSpacing: 8.0, // spacing between rows
+                              crossAxisSpacing: 8.0, // spacing between columns
+                            ),
                           ),
                         );
                       }
