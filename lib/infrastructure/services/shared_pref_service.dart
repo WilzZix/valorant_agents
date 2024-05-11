@@ -21,6 +21,10 @@ class SharedPrefService {
   }
 
   Future<bool> getLoginState(String key) async {
-    return _prefs.getBool(key)!;
+    if (_prefs.getBool(key) == null) {
+      return false;
+    } else {
+      return _prefs.getBool(key)!;
+    }
   }
 }
