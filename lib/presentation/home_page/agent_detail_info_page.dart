@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shimmer/shimmer.dart';
@@ -67,10 +66,12 @@ class _AgentDetailInfoPageState extends State<AgentDetailInfoPage> {
                                         height: 32,
                                         width: 100,
                                         decoration: const BoxDecoration(
-                                            color: Color(0xFF16163F),
-                                            shape: BoxShape.rectangle,
-                                            borderRadius: BorderRadius.all(
-                                                Radius.circular(8))),
+                                          color: Color(0xFF16163F),
+                                          shape: BoxShape.rectangle,
+                                          borderRadius: BorderRadius.all(
+                                            Radius.circular(8),
+                                          ),
+                                        ),
                                         child: Center(
                                           child: Text(
                                             state.data.role!.displayName!,
@@ -84,8 +85,8 @@ class _AgentDetailInfoPageState extends State<AgentDetailInfoPage> {
                                 ),
                               ),
                               Expanded(
-                                child: CachedNetworkImage(
-                                  imageUrl: state.data.fullPortrait!,
+                                child: Image.network(
+                                  state.data.fullPortrait!,
                                 ),
                               )
                             ],
@@ -278,7 +279,6 @@ class LoadingWidget extends StatelessWidget {
                     AgentAbilityLoadingWidget(
                       title: '',
                       description: '',
-                      imageUrl: '',
                     ),
                     SizedBox(
                       height: 16,
@@ -286,7 +286,6 @@ class LoadingWidget extends StatelessWidget {
                     AgentAbilityLoadingWidget(
                       title: '',
                       description: '',
-                      imageUrl: '',
                     ),
                     SizedBox(
                       height: 16,
@@ -294,7 +293,6 @@ class LoadingWidget extends StatelessWidget {
                     AgentAbilityLoadingWidget(
                       title: '',
                       description: '',
-                      imageUrl: '',
                     ),
                     SizedBox(
                       height: 16,
@@ -302,7 +300,6 @@ class LoadingWidget extends StatelessWidget {
                     AgentAbilityLoadingWidget(
                       title: '',
                       description: '',
-                      imageUrl: '',
                     ),
                   ],
                 ),
@@ -359,8 +356,8 @@ class AgentAbilityWidget extends StatelessWidget {
               ),
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: CachedNetworkImage(
-                  imageUrl: imageUrl,
+                child: Image.network(
+                  imageUrl,
                 ),
               ),
             ),
@@ -400,12 +397,10 @@ class AgentAbilityLoadingWidget extends StatelessWidget {
     super.key,
     required this.title,
     required this.description,
-    required this.imageUrl,
   });
 
   final String title;
   final String description;
-  final String imageUrl;
 
   @override
   Widget build(BuildContext context) {

@@ -1,4 +1,4 @@
-import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
@@ -110,93 +110,69 @@ class _ListPageState extends State<ListPage> {
                         return SizedBox(
                           child: GridView.builder(
                             shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
                             itemCount: state.data.length,
                             itemBuilder: (BuildContext context, int index) {
                               Color color = HexColor.fromHex(
                                   '#${state.data[index].backgroundGradientColors![1]}');
                               return Padding(
                                 padding: const EdgeInsets.all(8.0),
-                                child: Stack(
-                                  children: [
-                                    Container(
-                                      decoration: BoxDecoration(
-                                        color: color,
-                                        borderRadius: const BorderRadius.all(
-                                          Radius.circular(
-                                            12,
-                                          ),
-                                        ),
-                                      ),
-                                      child: GestureDetector(
-                                        onTap: () async {
-                                          context.push('/detail',
-                                              extra: state.data[index].uuid);
-                                        },
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
-                                          children: [
-                                            CachedNetworkImage(
-                                              fit: BoxFit.cover,
-                                              imageUrl:
-                                                  'https://media.valorant-api.com/agents/${state.data[index].uuid}/fullportrait.png',
-                                            ),
-                                          ],
-                                        ),
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    color: color,
+                                    borderRadius: const BorderRadius.all(
+                                      Radius.circular(
+                                        12,
                                       ),
                                     ),
-                                    Align(
-                                      alignment: Alignment.bottomCenter,
-                                      child: Container(
-                                        height: 35,
-                                        decoration: BoxDecoration(
-                                          borderRadius: const BorderRadius.all(
-                                            Radius.circular(
-                                              12,
+                                  ),
+                                  child: GestureDetector(
+                                    onTap: () async {
+                                      context.push('/detail',
+                                          extra: state.data[index].uuid);
+                                    },
+                                    child: Row(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        RotatedBox(
+                                          quarterTurns: 1,
+                                          child: Padding(
+                                            padding: const EdgeInsets.only(
+                                                left: 8.0),
+                                            child: Text(
+                                              state.data[index].displayName!,
+                                              style: const TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 22,
+                                                  color: Colors.white),
                                             ),
                                           ),
-                                          color: Colors.white.withOpacity(.5),
                                         ),
-                                        child: Column(
-                                          children: [
-                                            Padding(
+                                        if (state.data[index].role != null)
+                                          RotatedBox(
+                                            quarterTurns: 1,
+                                            child: Padding(
                                               padding: const EdgeInsets.only(
-                                                  left: 8),
+                                                  left: 8.0),
                                               child: Text(
-                                                state.data[index].displayName!,
+                                                state.data[index].role!
+                                                    .displayName!,
                                                 style: const TextStyle(
-                                                    fontWeight: FontWeight.bold,
-                                                    fontSize: 22,
+                                                    fontSize: 12,
                                                     color: Colors.white),
                                               ),
                                             ),
-                                            Container(
-                                              height: 3,
-                                              width: 70,
-                                              decoration: BoxDecoration(
-                                                shape: BoxShape.rectangle,
-                                                borderRadius:
-                                                    BorderRadius.circular(9),
-                                                color: Colors.grey,
-                                              ),
-                                            ),
-                                            if (state.data[index].role != null)
-                                              Padding(
-                                                padding: const EdgeInsets.only(
-                                                    left: 8.0),
-                                                child: Text(
-                                                  state.data[index].role!
-                                                      .displayName!,
-                                                  style: const TextStyle(
-                                                      fontSize: 12,
-                                                      color: Colors.white),
-                                                ),
-                                              ),
-                                          ],
+                                          ),
+                                        Expanded(
+                                          child: Image.network(
+                                            fit: BoxFit.cover,
+                                            'https://media.valorant-api.com/agents/${state.data[index].uuid}/fullportrait.png',
+                                          ),
                                         ),
-                                      ),
+                                      ],
                                     ),
-                                  ],
+                                  ),
                                 ),
                               );
                             },
