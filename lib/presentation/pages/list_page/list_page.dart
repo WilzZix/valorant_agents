@@ -22,7 +22,7 @@ class _ListPageState extends State<ListPage> {
   @override
   void initState() {
     super.initState();
-    BlocProvider.of<HomePageCubit>(context).getUserInfoCubit();
+    // BlocProvider.of<HomePageCubit>(context).getUserInfoCubit();
   }
 
   @override

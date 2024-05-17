@@ -18,6 +18,7 @@ import 'pages/auth/login/enter_display_name.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   await SharedPrefService().init();
   runApp(const MyApp());
 }

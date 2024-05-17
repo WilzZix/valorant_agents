@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:bloc/bloc.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:meta/meta.dart';
@@ -24,13 +22,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       } on FirebaseAuthException catch (e) {
         if (e.code == 'user-not-found') {
           emit(LoginErrorState('No user found for that email.'));
-          print('No user found for that email.');
         } else if (e.code == 'wrong-password') {
           emit(LoginErrorState('Wrong password provided for that user.'));
-          print('Wrong password provided for that user.');
         }
       } catch (e) {
-        log('line 39');
         emit(LoginErrorState(e.toString()));
       }
     });

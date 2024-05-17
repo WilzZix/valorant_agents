@@ -1,9 +1,9 @@
-import 'dart:developer';
-
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:volarant_agents/domain/routes/i_routes.dart';
 import 'package:volarant_agents/infrastructure/interceptor.dart';
+import 'package:volarant_agents/infrastructure/services/retry_request.dart';
 
 class NetworkProvider {
   static IRoutes routes = const IRoutes();
@@ -13,18 +13,24 @@ class NetworkProvider {
     dio = Dio(
       BaseOptions(
         baseUrl: routes.baseUrl,
+        connectTimeout: const Duration(
+          seconds: 5,
+        ),
+        receiveTimeout: const Duration(seconds: 3),
       ),
     )..interceptors.addAll(
         [
-          DioInterceptor(),
+          DioInterceptor(
+            RetryRequest(
+              dio: dio,
+              connectivity: Connectivity(),
+            ),
+          ),
           if (kDebugMode)
             LogInterceptor(
               responseHeader: false,
-              requestBody: true,
+              requestBody: false,
               responseBody: true,
-              logPrint: (error) => log(
-                error.toString(),
-              ),
             ),
         ],
       );
