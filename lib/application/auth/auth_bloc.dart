@@ -16,6 +16,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<LoginWithEmailAndPasswordEvent>((event, emit) async {
       try {
         emit(LoginInProgressState());
+
         UserModel data = await repository.login(event.email, event.password);
         await sharedPrefService.setLoginState('loginStatus', true);
         emit(LoggedInState(data));

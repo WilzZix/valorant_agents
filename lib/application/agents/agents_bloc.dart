@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:bloc/bloc.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:volarant_agents/infrastructure/dto/agent_model.dart';
 import 'package:volarant_agents/infrastructure/repositories/agent/agent_repository.dart';

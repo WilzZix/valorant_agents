@@ -13,6 +13,7 @@ import 'package:volarant_agents/presentation/home_page/agent_detail_info_page.da
 import 'package:volarant_agents/presentation/home_page/home_page.dart';
 import 'package:volarant_agents/presentation/pages/auth/login/login_page.dart';
 import 'package:volarant_agents/presentation/pages/auth/registration/register_page.dart';
+import 'package:volarant_agents/presentation/pages/splash_screen/splash_screen.dart';
 
 import 'pages/auth/login/enter_display_name.dart';
 
@@ -49,10 +50,10 @@ class _MyAppState extends State<MyApp> {
       providers: [
         BlocProvider(create: (context) => UserBloc()),
         BlocProvider(
-          create: (context) => AppManagerCubit()..initApp(),
+          create: (context) => AppManagerCubit(),
         ),
         BlocProvider(
-          create: (context) => AgentsBloc()..add(GetAgentsEvent()),
+          create: (context) => AgentsBloc(),
         ),
         BlocProvider(create: (context) => AuthBloc()),
         BlocProvider(create: (context) => HomePageCubit())
@@ -66,35 +67,44 @@ class _MyAppState extends State<MyApp> {
 }
 
 final _router = GoRouter(
-  initialLocation: '/login',
+  initialLocation: '/splash-screen',
   redirect: (context, state) async {
     SharedPrefService sharedPrefService = SharedPrefService();
     if (await sharedPrefService.getLoginState('loginStatus')) {
-      return '/';
+      return '/splash-screen';
     } else {
       return '/login';
     }
   },
   routes: [
     GoRoute(
-      path: '/',
+        name: '/splash-screen',
+        path: '/splash-screen',
+        builder: (context, state) => const SplashScreen()),
+    GoRoute(
+      name: '/home',
+      path: '/home',
       builder: (context, state) => const HomePage(),
     ),
     GoRoute(
+      name: '/detail',
       path: '/detail',
       builder: (context, state) => AgentDetailInfoPage(
         agentId: state.extra as String,
       ),
     ),
     GoRoute(
+      name: '/login',
       path: '/login',
       builder: (context, state) => const LoginScreen(),
     ),
     GoRoute(
+      name: '/register',
       path: '/register',
       builder: (context, state) => const RegisterScreen(),
     ),
     GoRoute(
+      name: '/enter-display-name',
       path: '/enter-display-name',
       builder: (context, state) => const EnterDisplayName(),
     ),

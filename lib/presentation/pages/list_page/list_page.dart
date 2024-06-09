@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
@@ -22,7 +21,7 @@ class _ListPageState extends State<ListPage> {
   @override
   void initState() {
     super.initState();
-    // BlocProvider.of<HomePageCubit>(context).getUserInfoCubit();
+     BlocProvider.of<AgentsBloc>(context).add(GetAgentsEvent());
   }
 
   @override

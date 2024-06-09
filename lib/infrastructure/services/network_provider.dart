@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
@@ -12,11 +14,7 @@ class NetworkProvider {
   static Future<void> init() async {
     dio = Dio(
       BaseOptions(
-        baseUrl: routes.baseUrl,
-        connectTimeout: const Duration(
-          seconds: 5,
-        ),
-        receiveTimeout: const Duration(seconds: 3),
+        baseUrl: 'https://valorant-api.com/v1',
       ),
     )..interceptors.addAll(
         [
@@ -28,9 +26,12 @@ class NetworkProvider {
           ),
           if (kDebugMode)
             LogInterceptor(
-              responseHeader: false,
-              requestBody: false,
+              responseHeader: true,
+              requestBody: true,
               responseBody: true,
+              logPrint: (e) {
+                log(e.toString());
+              },
             ),
         ],
       );

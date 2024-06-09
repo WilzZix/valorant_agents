@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:volarant_agents/infrastructure/services/network_provider.dart';
@@ -10,6 +12,7 @@ class AppManagerCubit extends Cubit<AppManagerState> {
   Future<void> initApp() async {
     emit(AppManagerInitial());
     try {
+      log('line 15 initApp');
       await NetworkProvider.init();
       emit(AppManagerLoaded());
     } catch (e) {
