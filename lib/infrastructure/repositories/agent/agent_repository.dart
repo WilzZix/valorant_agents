@@ -9,7 +9,8 @@ class AgentsRepository implements IAgent {
   @override
   Future<List<AgentModel>> getAgents() async {
     log('line 9');
-    final Response response = await NetworkProvider.dio.get('/agents');
+    final Response response =
+        await NetworkProvider.dio.get('/agents');
     log('line 14');
     return AgentModel.fetchData(response.data ?? {});
   }

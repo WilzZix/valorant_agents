@@ -70,11 +70,10 @@ final _router = GoRouter(
   initialLocation: '/splash-screen',
   redirect: (context, state) async {
     SharedPrefService sharedPrefService = SharedPrefService();
-    if (await sharedPrefService.getLoginState('loginStatus')) {
-      return '/splash-screen';
-    } else {
+    if (!await sharedPrefService.getLoginState()) {
       return '/login';
     }
+    return null;
   },
   routes: [
     GoRoute(

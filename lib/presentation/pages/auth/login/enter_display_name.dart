@@ -21,7 +21,7 @@ class _EnterDisplayNameState extends State<EnterDisplayName> {
       body: BlocListener<AuthBloc, AuthState>(
         listener: (context, state) {
           if (state is UserDisplayNameUpdated) {
-            context.go('/');
+            context.go('/home');
           }
         },
         child: Padding(

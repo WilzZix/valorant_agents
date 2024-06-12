@@ -1,12 +1,11 @@
 import 'dart:io';
 
 import 'package:dio/dio.dart';
-import 'package:volarant_agents/infrastructure/services/retry_request.dart';
 
 class DioInterceptor extends Interceptor {
-  final RetryRequest request;
+//  final RetryRequest request;
 
-  DioInterceptor(this.request);
+  DioInterceptor();
 
   bool _shouldRetry(DioException err) {
     return err.type == DioExceptionType.unknown &&

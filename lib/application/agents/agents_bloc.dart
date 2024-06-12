@@ -17,7 +17,7 @@ class AgentsBloc extends Bloc<AgentsEvent, AgentsState> {
 
   AgentsRepository repository = AgentsRepository();
 
-  Future _getAgents(GetAgentsEvent event, Emitter<AgentsState> emitter) async {
+  Future _getAgents(GetAgentsEvent event, Emitter<AgentsState> emit) async {
     try {
       emit(AgentsLoadingState());
       List<AgentModel> data = await repository.getAgents();
@@ -28,7 +28,7 @@ class AgentsBloc extends Bloc<AgentsEvent, AgentsState> {
   }
 
   Future _getAgentDetail(
-      GetAgentDetailInfoEvent event, Emitter<AgentsState> emitter) async {
+      GetAgentDetailInfoEvent event, Emitter<AgentsState> emit) async {
     emit(AgentDetailInfoLoadingState());
     try {
       AgentModel data = await repository.getAgentDetail(agentId: event.agentId);

@@ -25,6 +25,16 @@ class _SplashScreenState extends State<SplashScreen> {
           if (state is AppManagerLoaded) {
             context.pushNamed('/home');
           }
+          if (state is AppManagerLoadingError) {
+            showModalBottomSheet(
+              context: context,
+              builder: (context) {
+                return Center(
+                  child: Text(state.msg),
+                );
+              },
+            );
+          }
         },
         child: const Center(
           child: Icon(Icons.downloading),

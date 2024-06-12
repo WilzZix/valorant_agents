@@ -7,6 +7,7 @@ class HomePageInitial extends HomePageState {}
 
 class UserInfoLoaded extends HomePageState {
   final UserModel userDate;
+  final String displayName;
 
-  UserInfoLoaded(this.userDate);
+  UserInfoLoaded({required this.userDate, required this.displayName});
 }

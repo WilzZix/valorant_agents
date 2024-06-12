@@ -14,9 +14,11 @@ class AppManagerCubit extends Cubit<AppManagerState> {
     try {
       log('line 15 initApp');
       await NetworkProvider.init();
+      log('line 17 initApp');
       emit(AppManagerLoaded());
+      log('line 19 initApp');
     } catch (e) {
-      print("line 19: $e");
+      emit(AppManagerLoadingError(msg: e.toString()));
     }
   }
 }
