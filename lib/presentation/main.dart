@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:volarant_agents/application/agents/agents_bloc.dart';
 import 'package:volarant_agents/application/app_manager/app_manager_cubit.dart';
 import 'package:volarant_agents/application/auth/auth_bloc.dart';
+import 'package:volarant_agents/application/connection_checker/connection_checker_bloc.dart';
 import 'package:volarant_agents/application/home_page/home_page_cubit.dart';
 import 'package:volarant_agents/application/user/user_bloc.dart';
 import 'package:volarant_agents/firebase_options.dart';
@@ -56,7 +57,8 @@ class _MyAppState extends State<MyApp> {
           create: (context) => AgentsBloc(),
         ),
         BlocProvider(create: (context) => AuthBloc()),
-        BlocProvider(create: (context) => HomePageCubit())
+        BlocProvider(create: (context) => HomePageCubit()),
+        BlocProvider(create: (context) => ConnectionCheckerBloc())
       ],
       child: MaterialApp.router(
         debugShowCheckedModeBanner: false,
